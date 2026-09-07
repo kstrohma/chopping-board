@@ -328,6 +328,48 @@
   }
   footer a { color: var(--muted); }
 
+  .how { margin: 0.4rem 0 1.5rem; }
+  .how h3 {
+    font-family: Oswald, sans-serif;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    font-size: 0.8rem; font-weight: 600;
+    color: var(--muted); margin: 0 0 1rem;
+  }
+  .steps {
+    list-style: none; margin: 0; padding: 0;
+    counter-reset: step;
+    display: grid; gap: 0.75rem;
+  }
+  .steps li {
+    counter-increment: step;
+    display: grid; grid-template-columns: 1.7rem 1fr; gap: 0.7rem;
+    align-items: start;
+    color: var(--muted); font-size: 0.88rem; line-height: 1.5;
+    max-width: 44rem;
+  }
+  .steps li::before {
+    content: counter(step);
+    font-family: Oswald, sans-serif; font-weight: 700; font-size: 0.95rem;
+    color: var(--blood);
+    width: 1.7rem; height: 1.7rem;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--line); border-radius: 3px;
+    background: var(--raise);
+  }
+  .steps b { color: var(--bone); font-weight: 600; }
+  .takeaway {
+    margin: 1.1rem 0 0;
+    padding: 0.8rem 1rem;
+    border-left: 3px solid var(--blood);
+    background: rgba(178, 72, 58, 0.08);
+    border-radius: 2px;
+    color: var(--muted); font-size: 0.9rem; line-height: 1.5;
+    max-width: 44rem;
+  }
+  .takeaway b { color: var(--bone); font-weight: 600; }
+  .fineprint { color: var(--faint); font-size: 0.78rem; }
+  .fineprint b { color: var(--muted); font-weight: 600; }
+
   .message { padding: 2rem 0.75rem; color: var(--muted); }
   .message b { display: block; color: var(--bone); font-weight: 600; margin-bottom: 0.3rem; }
 </style>
@@ -364,16 +406,34 @@
 
   <footer>
     <div class="legend" id="legend"></div>
-    <p id="method"></p>
-    <p>Each row is a projected-score range on one shared scale: the bar spans the
-      10th to 90th percentile of simulated outcomes, the white tick is the median.
-      <b>Chop %</b> is how often a team posts the league's lowest score;
-      <b>bottom-2</b> is how often it lands in the bottom two.</p>
-    <p>Scores are drawn from per-player Gamma distributions (mean = projection,
-      variance assumed by position), with a shared per-NFL-team factor so
-      stacks move together. Variance is an assumed ballpark, not fitted to this
-      league — treat the tails as directional. Mid-game numbers credit points
-      banked so far plus part of the remaining projection.</p>
+
+    <div class="how">
+      <h3>How the chop % is figured</h3>
+      <ol class="steps">
+        <li><b>Start with the projections.</b> Every starter has a projected score —
+          the points Fleaflicker expects them to put up this week.</li>
+        <li><b>Nobody hits their projection exactly.</b> So instead of one number we
+          give each player a realistic range of outcomes — wide and boom-or-bust for
+          a WR or TE, tighter for a QB — and let teammates who play together rise and
+          fall as a group.</li>
+        <li><b>Play the week out 50,000 times.</b> In each run every player draws a
+          score from their range and we total up each team — 50,000 different ways the
+          same week could realistically go.</li>
+        <li><b>Count who finishes last.</b> In each run the lowest-scoring team gets
+          chopped. A team's <b>chop %</b> is just how often it came out last across all
+          50,000 runs.</li>
+      </ol>
+      <p class="takeaway">So a <b>20%</b> means: in about <b>1 out of every 5</b> ways
+        the week could plausibly play out, this team posts the league low and loses its
+        head. A lower projection and a shakier lineup both push the number up.</p>
+    </div>
+
+    <p class="fineprint">The bar on each row is that team's likely score range — 10th to
+      90th percentile of the runs, with the median tick. <b>Bottom-2</b> is how often a
+      team lands in the lowest two. The spread we use per position is an educated
+      estimate, not tuned to this league yet, so read close margins as a guide rather
+      than gospel. During games, a player is credited with the points banked so far plus
+      part of what's still to come.</p>
   </footer>
 </div>
 
@@ -509,10 +569,6 @@ function render(data) {
   document.getElementById('legend').innerHTML =
     [['Safe', 0.02], ['Exposed', 0.09], ['On the block', 0.21]]
       .map(([l, p]) => `<span><i style="background:${band(p)}"></i>${l}</span>`).join('');
-
-  document.getElementById('method').innerHTML =
-    `<b>${data.sims.toLocaleString()}</b> Monte-Carlo simulations · shared-team ` +
-    `correlation factor <b>${data.rho}</b> · read-only Fleaflicker projections.`;
 }
 
 function fail(headline, detail) {
