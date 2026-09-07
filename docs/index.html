@@ -92,6 +92,45 @@
   .meta b { color: var(--bone); font-weight: 600; }
   .meta .stale, .meta .stale b { color: var(--amber); }
 
+  /* week picker */
+  .weekbar {
+    margin-top: 1.15rem;
+    display: flex; align-items: center; gap: 0.65rem;
+    font-family: Oswald, sans-serif;
+    text-transform: uppercase; letter-spacing: 0.11em; font-size: 0.72rem;
+    color: var(--faint);
+  }
+  #weeksel {
+    appearance: none; -webkit-appearance: none;
+    font-family: Oswald, sans-serif; font-size: 0.82rem; font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--bone); background-color: var(--raise);
+    border: 1px solid var(--line); border-radius: 3px;
+    padding: 0.4rem 2rem 0.4rem 0.75rem;
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+      linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+    background-position: calc(100% - 1.05rem) 55%, calc(100% - 0.75rem) 55%;
+    background-size: 0.32rem 0.32rem, 0.32rem 0.32rem;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+  #weeksel:focus-visible { outline: 2px solid var(--blood); outline-offset: 1px; }
+  .csv {
+    color: var(--muted); text-decoration: none;
+    font-family: Oswald, sans-serif; letter-spacing: 0.04em; font-size: 0.72rem;
+    border: 1px solid var(--line); border-radius: 3px;
+    padding: 0.38rem 0.6rem;
+  }
+  .csv:hover { color: var(--bone); border-color: var(--muted); }
+
+  .status {
+    font-family: Oswald, sans-serif; font-weight: 700; font-size: 0.82rem;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .status.cut { color: var(--blood); }
+  .status.safe { color: var(--faint); font-weight: 500; }
+
   /* ------------------------------------------------------- hero: on the block */
 
   .hero {
@@ -388,8 +427,13 @@
       <span class="rule"></span>
     </div>
     <h1>Guillotine Austria's<br><span class="thin">Chopping Board</span></h1>
-    <p class="sub">One team posts the lowest score each week and loses its head.
+    <p class="sub" id="sub">One team posts the lowest score each week and loses its head.
       These are the odds of the axe — ranked most exposed first.</p>
+    <div class="weekbar">
+      <label for="weeksel">View</label>
+      <select id="weeksel" aria-label="Choose a week"></select>
+      <a id="csvlink" class="csv" hidden>↓ CSV</a>
+    </div>
     <div class="meta" id="meta">Loading…</div>
   </header>
 
@@ -399,8 +443,8 @@
     <div></div>
     <div>Team</div>
     <div class="axis" id="axis"></div>
-    <div class="r">Proj</div>
-    <div class="r">Chop</div>
+    <div class="r" id="col3">Proj</div>
+    <div class="r" id="col4">Chop</div>
   </div>
   <div class="board" id="board"></div>
 
@@ -484,6 +528,7 @@ function esc(s) {
 }
 
 let payload = null;
+let mode = 'current';
 
 function renderMeta() {
   if (!payload) return;
@@ -499,6 +544,17 @@ function renderMeta() {
 
 function render(data) {
   payload = data;
+
+  // restore the live-view chrome (a final view may have changed it)
+  document.getElementById('hero').hidden = false;
+  document.getElementById('boardhead').hidden = false;
+  document.getElementById('col3').textContent = 'Proj';
+  document.getElementById('col4').textContent = 'Chop';
+  document.getElementById('csvlink').hidden = true;
+  document.getElementById('sub').textContent =
+    'One team posts the lowest score each week and loses its head. ' +
+    'These are the odds of the axe — ranked most exposed first.';
+
   const teams = [...data.teams].sort((a, b) => b.chop_prob - a.chop_prob);
 
   // One shared point scale across every team, padded to round numbers.
@@ -572,27 +628,170 @@ function render(data) {
       .map(([l, p]) => `<span><i style="background:${band(p)}"></i>${l}</span>`).join('');
 }
 
+// ------------------------------------------------ a finished week's results
+
+function renderFinal(snap, entry) {
+  const teams = [...snap.teams].sort((a, b) => a.score - b.score); // lowest first
+  const hi = Math.max(10, Math.ceil(Math.max(...teams.map(t => t.score)) / 10) * 10);
+  const pos = v => (v / hi) * 100;
+  const chopped = teams[0];
+  const choppedName = Array.isArray(snap.chopped) ? snap.chopped.join(' & ') : snap.chopped;
+
+  document.getElementById('hero').hidden = false;
+  document.getElementById('boardhead').hidden = false;
+  document.getElementById('col3').textContent = 'Score';
+  document.getElementById('col4').textContent = 'Result';
+  document.getElementById('sub').textContent =
+    'Final scores for the week — the lowest total lost its head.';
+
+  // meta
+  document.getElementById('meta').innerHTML =
+    `Week <b>${snap.week}</b> · final` +
+    `<span><b>${teams.length}</b> teams scored</span>` +
+    `<span>Chopped <b>${esc(choppedName)}</b> at <b>${chopped.score.toFixed(1)}</b></span>` +
+    `<span>Archived ${stamp(snap.archived_at)}</span>`;
+
+  // csv download
+  const csv = document.getElementById('csvlink');
+  if (entry && entry.csv) {
+    csv.hidden = false;
+    csv.href = `${entry.csv}?t=${Date.now()}`;
+    csv.setAttribute('download', `week-${String(snap.week).padStart(2, '0')}.csv`);
+    csv.textContent = `↓ Week ${snap.week} CSV`;
+  } else {
+    csv.hidden = true;
+  }
+
+  // hero — who got chopped
+  document.getElementById('hero').innerHTML = `
+    <div class="hero-inner" style="--band:var(--blood)">
+      <div>
+        <div class="hero-label">Chopped · Week ${snap.week}</div>
+        <h2 class="hero-name">${esc(choppedName)}</h2>
+        <div class="hero-note">Posted the league low at
+          <b>${chopped.score.toFixed(1)}</b> points and lost its head.
+          ${teams.length - 1} teams live to fight another week.</div>
+      </div>
+      <div class="hero-pct">
+        <span class="big">${chopped.score.toFixed(1)}</span>
+        <span class="cap">week-low score</span>
+      </div>
+    </div>`;
+
+  // axis — final scores start the scale at zero (longer bar = more points)
+  const axis = document.getElementById('axis');
+  axis.innerHTML = '';
+  for (let v = 0; v <= hi; v += hi / 4) {
+    const s = document.createElement('span');
+    s.style.left = pos(v) + '%';
+    s.textContent = Math.round(v);
+    axis.appendChild(s);
+  }
+
+  // rows
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+  teams.forEach((t, i) => {
+    const cut = !!t.chopped;
+    const c = cut ? 'var(--blood)' : 'var(--safe)';
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = `
+      <div class="rank">${i + 1}</div>
+      <div class="team">
+        <div class="name">${esc(t.team)}</div>
+        <div class="proj">final score</div>
+      </div>
+      <div class="range" style="--band:${c}" title="${t.score.toFixed(1)} pts">
+        <div class="span" style="left:0;width:${Math.max(pos(t.score), 2)}%"></div>
+      </div>
+      <div class="projcol">
+        <div class="v">${t.score.toFixed(1)}</div>
+        <div class="u">pts</div>
+      </div>
+      <div class="chop">
+        <div class="status ${cut ? 'cut' : 'safe'}">${cut ? 'Chopped' : 'Safe'}</div>
+      </div>`;
+    board.appendChild(row);
+  });
+
+  document.getElementById('legend').innerHTML =
+    `<span><i style="background:var(--blood)"></i>Chopped</span>` +
+    `<span><i style="background:var(--safe)"></i>Survived</span>`;
+}
+
 function fail(headline, detail) {
   document.getElementById('meta').textContent = '';
   document.getElementById('hero').hidden = true;
   document.getElementById('boardhead').hidden = true;
+  document.getElementById('csvlink').hidden = true;
   document.getElementById('board').innerHTML =
     `<div class="message"><b>${headline}</b>${detail}</div>`;
 }
 
-// Cache-bust: Pages serves data.json with a short but nonzero TTL.
-function load() {
-  fetch(`data.json?t=${Date.now()}`)
+// --------------------------------------------------------------- data + weeks
+
+let currentData = null;
+let historyWeeks = [];
+
+function buildDropdown() {
+  const sel = document.getElementById('weeksel');
+  sel.innerHTML = '';
+  const cur = document.createElement('option');
+  cur.value = 'current';
+  cur.textContent = currentData ? `Current · Week ${currentData.week}` : 'Current week';
+  sel.appendChild(cur);
+  [...historyWeeks].sort((a, b) => b.week - a.week).forEach(w => {
+    const o = document.createElement('option');
+    o.value = String(w.week);
+    o.textContent = `Week ${w.week} · final`;
+    sel.appendChild(o);
+  });
+}
+
+function showCurrent() {
+  mode = 'current';
+  if (currentData) render(currentData);
+  else load();
+}
+
+function showWeek(week) {
+  const entry = historyWeeks.find(w => String(w.week) === String(week));
+  if (!entry) return showCurrent();
+  mode = 'final';
+  fetch(`${entry.json}?t=${Date.now()}`)
     .then(r => r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)))
-    .then(render)
-    .catch(err => { if (!payload) fail(
+    .then(snap => { if (mode === 'final') renderFinal(snap, entry); })
+    .catch(err => fail('Week unavailable',
+      `Couldn't load week ${week}. (${err.message})`));
+}
+
+document.getElementById('weeksel').addEventListener('change', e => {
+  if (e.target.value === 'current') showCurrent();
+  else showWeek(e.target.value);
+});
+
+// Cache-bust: Pages serves these with a short but nonzero TTL.
+function load() {
+  return fetch(`data.json?t=${Date.now()}`)
+    .then(r => r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)))
+    .then(data => { currentData = data; if (mode === 'current') render(data); })
+    .catch(err => { if (!payload && mode === 'current') fail(
       'No data yet',
       `The update job hasn't published data.json. (${err.message})`); });
 }
 
-load();
-setInterval(load, RELOAD_MS);      // refresh during game windows
-setInterval(renderMeta, 30000);    // keep the "x min ago" honest
+function loadHistory() {
+  return fetch(`history/index.json?t=${Date.now()}`)
+    .then(r => r.ok ? r.json() : { weeks: [] })
+    .then(idx => { historyWeeks = (idx && idx.weeks) || []; })
+    .catch(() => { historyWeeks = []; });
+}
+
+Promise.all([load(), loadHistory()]).then(buildDropdown);
+
+setInterval(() => { if (mode === 'current') load(); }, RELOAD_MS);
+setInterval(() => { if (mode === 'current') renderMeta(); }, 30000);
 </script>
 </body>
 </html>

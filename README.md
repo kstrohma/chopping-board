@@ -74,6 +74,30 @@ treat it as directional.
 
 Correlation between opposing players in the same game is not modeled.
 
+## Week history
+
+Once a week's games are final, `archive.py` snapshots the final scores so the
+page can show them later. It writes three things under `docs/history/`:
+
+```
+week-NN.json    the finished-week board the page renders
+week-NN.csv     raw final scores, for download / spreadsheets
+index.json      the list of archived weeks the dropdown reads
+```
+
+The page's **View** dropdown offers "Current · Week N" (the live chop odds) plus
+every archived week. Picking a past week shows that week's final scores and flags
+who got chopped, with a CSV download link.
+
+`archive.py` auto-detects the most recently completed week (it walks back from
+the current scoring period to the last week whose starters have all finished),
+so the scheduled job needs no week number. Archive one explicitly with
+`python archive.py --week 1`.
+
+The `archive week` workflow runs every Wednesday at 12:00 UTC (~14:00 in Austria
+during the season), well after Monday Night Football has gone final. Trigger it
+by hand from the Actions tab — with an optional week number — to backfill.
+
 ## Scheduling
 
 Every 15 minutes during NFL game windows, hourly otherwise. Windows are UTC and
