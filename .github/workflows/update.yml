@@ -1,0 +1,77 @@
+name: update chop data
+
+# All crons are UTC. Windows are deliberately an hour wider than the games
+# themselves so the same schedule works across the November EDT -> EST shift
+# without editing. Game windows tick at :07 :22 :52 and the hourly baseline at
+# :37, so the two never collide and a window hour gets exactly four runs.
+#
+# Kickoffs in US Eastern, and where they land in UTC:
+#   Thu 20:15 ET (TNF)              -> Fri 00:15-05:00 UTC
+#   Sun 09:30 ET (London)           -> Sun 13:30 UTC
+#   Sun 13:00 / 16:25 ET            -> Sun 17:00-21:00 UTC
+#   Sun 20:20 ET (SNF)              -> Mon 00:20-05:00 UTC
+#   Mon 20:15 ET (MNF)              -> Tue 00:15-05:00 UTC
+#   Thu holiday slate 12:30 ET      -> Thu 17:00-23:59 UTC
+#   Sat late-season slate 13:00 ET  -> Sat 17:00-23:59 UTC, spilling to Sun 00:00-05:00
+#
+# GitHub's scheduler is best effort: the docs note schedule events can be
+# delayed under load and queued jobs may be dropped. Treat 15 minutes as a
+# target, not a guarantee — the page shows its own data age for this reason.
+
+on:
+  schedule:
+    - cron: '7,22,52 13-23 * * 0'   # Sunday daytime, London kick through late afternoon
+    - cron: '7,22,52 0-5 * * 1'     # Sunday night football
+    - cron: '7,22,52 0-5 * * 2'     # Monday night football
+    - cron: '7,22,52 0-5 * * 5'     # Thursday night football
+    - cron: '7,22,52 17-23 * * 4'   # Thanksgiving / holiday afternoon games
+    - cron: '7,22,52 17-23 * * 6'   # late-season Saturday slate
+    - cron: '7,22,52 0-5 * * 0'     # spillover from Saturday night games
+    - cron: '37 * * * *'            # hourly baseline, every day
+  workflow_dispatch:                # manual refresh from the Actions tab
+  repository_dispatch:              # optional external scheduler, if you add one
+    types: [refresh]
+
+# Queue rather than cancel: two runs pushing to the same branch would race.
+concurrency:
+  group: chop-data
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Build data
+        env:
+          FF_LEAGUE_ID: '350513'
+          FF_SEASON: '2026'
+        run: python build_data.py
+
+      - name: Commit if changed
+        run: |
+          set -euo pipefail
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/data.json
+          if git diff --cached --quiet; then
+            echo "no change, nothing to commit"
+            exit 0
+          fi
+          week=$(python -c "import json;print(json.load(open('docs/data.json'))['week'])")
+          git commit -m "chop data: week ${week} ($(date -u '+%Y-%m-%d %H:%M UTC'))"
+          git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+          git push

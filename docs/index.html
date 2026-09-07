@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>The Chopping Board</title>
+<meta name="description" content="Weekly guillotine-league chop screen: who's most likely to post the lowest score and get cut.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Committed single-world design: a blade-and-blood night board.
+     Every color is painted explicitly so it holds on any ground. */
+  :root {
+    --steel:   #15191e;
+    --raise:   #1e252c;
+    --line:    #2b343d;
+    --bone:    #ece7de;
+    --muted:   #8794a1;
+    --faint:   #5f6b77;
+    --safe:    #4e8c7e;
+    --middle:  #b99a5b;
+    --danger:  #b2483a;
+    --blood:   #c94a3b;
+    --amber:   #d8a338;
+    --track:   #232c35;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    padding: 0 0 4rem;
+    background:
+      radial-gradient(120% 60% at 50% -10%, #1c232b 0%, var(--steel) 60%) fixed;
+    color: var(--bone);
+    font-family: Archivo, system-ui, sans-serif;
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.45;
+    min-height: 100vh;
+  }
+
+  .wrap { max-width: 60rem; margin: 0 auto; padding: 0 1.15rem; }
+
+  /* ---------------------------------------------------------- masthead */
+
+  header { padding: 2.6rem 0 1.4rem; }
+
+  .eyebrow {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-family: Oswald, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--faint);
+  }
+  .eyebrow .blade { color: var(--danger); display: inline-flex; }
+  .eyebrow .rule { flex: 1; height: 1px; background: var(--line); }
+
+  h1 {
+    margin: 0.55rem 0 0;
+    font-family: Oswald, sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.4rem, 8vw, 4rem);
+    letter-spacing: 0.005em;
+    line-height: 0.98;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  h1 .thin { color: var(--muted); font-weight: 400; }
+
+  .sub {
+    margin-top: 0.7rem;
+    max-width: 34rem;
+    color: var(--muted);
+    font-size: 0.96rem;
+  }
+
+  .meta {
+    margin-top: 1.1rem;
+    display: flex; flex-wrap: wrap; gap: 0.45rem 1.4rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-family: Oswald, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+  }
+  .meta b { color: var(--bone); font-weight: 600; }
+  .meta .stale, .meta .stale b { color: var(--amber); }
+
+  /* ------------------------------------------------------- hero: on the block */
+
+  .hero {
+    position: relative;
+    margin-top: 1.8rem;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background:
+      linear-gradient(180deg, rgba(178,72,58,0.10), rgba(178,72,58,0) 60%),
+      var(--raise);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute; inset: 0 auto 0 0; width: 4px;
+    background: var(--blood);
+  }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    padding: 1.5rem 1.6rem 1.6rem 1.9rem;
+  }
+  .hero-label {
+    font-family: Oswald, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.74rem;
+    color: var(--blood);
+    font-weight: 600;
+  }
+  .hero-name {
+    font-family: Oswald, sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.7rem, 5vw, 2.7rem);
+    line-height: 1.02;
+    margin: 0.25rem 0 0;
+    text-wrap: balance;
+  }
+  .hero-note { margin-top: 0.55rem; color: var(--muted); font-size: 0.9rem; }
+  .hero-note b { color: var(--bone); font-weight: 600; }
+  .hero-pct { text-align: right; line-height: 0.9; }
+  .hero-pct .big {
+    font-family: Oswald, sans-serif;
+    font-weight: 700;
+    font-size: clamp(3rem, 12vw, 5rem);
+    color: var(--blood);
+    letter-spacing: -0.01em;
+  }
+  .hero-pct .cap {
+    display: block;
+    font-family: Oswald, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-top: 0.35rem;
+  }
+
+  /* ------------------------------------------------------------- the board */
+
+  .board-head {
+    display: grid;
+    align-items: end;
+    gap: 0.75rem;
+    grid-template-columns: 2.4rem minmax(6.5rem, 1.05fr) minmax(0, 1.9fr) 3.6rem 4.4rem;
+    padding: 2.2rem 0.75rem 0.5rem;
+    font-family: Oswald, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    font-size: 0.68rem;
+    color: var(--faint);
+  }
+  .board-head .axis {
+    position: relative;
+    height: 1.1rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .board-head .axis span {
+    position: absolute;
+    bottom: 0.15rem;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+  .board-head .axis span:first-child { transform: none; }
+  .board-head .axis span:last-child { transform: translateX(-100%); }
+  .board-head .r { text-align: right; }
+
+  .board { border-top: 1px solid var(--line); }
+
+  .row {
+    display: grid;
+    align-items: center;
+    gap: 0.75rem;
+    grid-template-columns: 2.4rem minmax(6.5rem, 1.05fr) minmax(0, 1.9fr) 3.6rem 4.4rem;
+    padding: 0.85rem 0.75rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .row:hover { background: rgba(255,255,255,0.015); }
+
+  .rank {
+    font-family: Oswald, sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--faint);
+    text-align: center;
+  }
+
+  .team .name {
+    font-family: Oswald, sans-serif;
+    font-weight: 600;
+    font-size: 1.08rem;
+    line-height: 1.12;
+    letter-spacing: 0.005em;
+  }
+  .team .proj {
+    margin-top: 0.12rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  .team .proj b { color: var(--bone); font-weight: 600; }
+  .team .projm { display: none; }
+
+  /* projected-points column */
+  .projcol {
+    text-align: right;
+    font-family: Oswald, sans-serif;
+  }
+  .projcol .v {
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: var(--bone);
+    letter-spacing: -0.01em;
+  }
+  .projcol .u {
+    font-family: Archivo, sans-serif;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--faint);
+  }
+
+  /* shared-scale range bar: p10 — median — p90 */
+  .range {
+    position: relative;
+    height: 1.55rem;
+    border-radius: 2px;
+    background:
+      repeating-linear-gradient(90deg,
+        transparent 0, transparent calc(20% - 1px),
+        rgba(255,255,255,0.04) calc(20% - 1px), rgba(255,255,255,0.04) 20%),
+      var(--track);
+  }
+  .range .span {
+    position: absolute; top: 0; bottom: 0;
+    border-radius: 2px;
+    background: var(--band);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.25) inset;
+    opacity: 0.9;
+  }
+  .range .median {
+    position: absolute; top: -2px; bottom: -2px; width: 2px;
+    background: var(--bone);
+    transform: translateX(-1px);
+  }
+  .range .medlab {
+    position: absolute; top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #10151a;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.25);
+    pointer-events: none;
+  }
+
+  .chop {
+    text-align: right;
+    font-family: Oswald, sans-serif;
+  }
+  .chop .v {
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--band);
+    letter-spacing: -0.01em;
+  }
+  .chop .b2 {
+    font-family: Archivo, sans-serif;
+    font-size: 0.7rem;
+    color: var(--faint);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  /* narrow screens: stack the bar under the name/pct line */
+  @media (max-width: 640px) {
+    .board-head { display: none; }
+    .row {
+      grid-template-columns: 2rem 1fr auto;
+      grid-template-areas: "rank team chop" ". range range";
+      row-gap: 0.6rem;
+    }
+    .rank { grid-area: rank; align-self: start; padding-top: 0.15rem; }
+    .team { grid-area: team; }
+    .chop { grid-area: chop; align-self: start; }
+    .range { grid-area: range; }
+    .projcol { display: none; }
+    .team .projm { display: inline; color: var(--bone); font-weight: 600; }
+    .team .projm::after { content: " · "; color: var(--faint); font-weight: 400; }
+  }
+
+  /* ---------------------------------------------------------------- footer */
+
+  footer {
+    margin-top: 2.4rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--line);
+    color: var(--faint);
+    font-size: 0.8rem;
+    line-height: 1.65;
+  }
+  footer p { margin: 0.5rem 0; max-width: 46rem; }
+  footer b { color: var(--muted); font-weight: 600; }
+  footer .legend {
+    display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem;
+    margin: 0.2rem 0 1rem;
+    font-family: Oswald, sans-serif;
+    text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.72rem;
+    color: var(--muted);
+  }
+  footer .legend i {
+    display: inline-block; width: 0.85rem; height: 0.85rem;
+    border-radius: 2px; margin-right: 0.4rem; vertical-align: -1px;
+  }
+  footer a { color: var(--muted); }
+
+  .message { padding: 2rem 0.75rem; color: var(--muted); }
+  .message b { display: block; color: var(--bone); font-weight: 600; margin-bottom: 0.3rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">
+      <span class="blade" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M2 2 L14 2 L14 6 L2 6 Z" fill="currentColor"/>
+          <path d="M2 6 L14 6 L8 9 Z" fill="currentColor" opacity="0.55"/>
+        </svg>
+      </span>
+      <span>Guillotine League · Fleaflicker</span>
+      <span class="rule"></span>
+    </div>
+    <h1>The Chopping<br><span class="thin">Board</span></h1>
+    <p class="sub">One team posts the lowest score each week and loses its head.
+      These are the odds of the axe — ranked most exposed first.</p>
+    <div class="meta" id="meta">Loading…</div>
+  </header>
+
+  <section class="hero" id="hero" aria-label="Most likely to be chopped"></section>
+
+  <div class="board-head" id="boardhead">
+    <div></div>
+    <div>Team</div>
+    <div class="axis" id="axis"></div>
+    <div class="r">Proj</div>
+    <div class="r">Chop</div>
+  </div>
+  <div class="board" id="board"></div>
+
+  <footer>
+    <div class="legend" id="legend"></div>
+    <p id="method"></p>
+    <p>Each row is a projected-score range on one shared scale: the bar spans the
+      10th to 90th percentile of simulated outcomes, the white tick is the median.
+      <b>Chop %</b> is how often a team posts the league's lowest score;
+      <b>bottom-2</b> is how often it lands in the bottom two.</p>
+    <p>Scores are drawn from per-player Gamma distributions (mean = projection,
+      variance assumed by position), with a shared per-NFL-team factor so
+      stacks move together. Variance is an assumed ballpark, not fitted to this
+      league — treat the tails as directional. Mid-game numbers credit points
+      banked so far plus part of the remaining projection.</p>
+  </footer>
+</div>
+
+<script>
+const STALE_MINUTES = 90;
+const RELOAD_MS = 5 * 60 * 1000;
+
+// Severity ramp: survival teal -> amber -> blood. Colour carries the chop
+// probability so ranking reads without relying on position alone.
+function band(p) {
+  const stops = [
+    [0.00, [ 78, 140, 126]],
+    [0.06, [130, 150, 105]],
+    [0.12, [185, 154,  91]],
+    [0.20, [190, 110,  66]],
+    [0.30, [201,  74,  59]],
+  ];
+  for (let i = 0; i < stops.length - 1; i++) {
+    const [a, ca] = stops[i], [b, cb] = stops[i + 1];
+    if (p <= b) {
+      const t = Math.max(0, (p - a) / (b - a));
+      return `rgb(${ca.map((v, k) => Math.round(v + t * (cb[k] - v))).join(',')})`;
+    }
+  }
+  return `rgb(${stops.at(-1)[1].join(',')})`;
+}
+
+const fmtPct = p => (p * 100).toFixed(p < 0.1 ? 1 : 0) + '%';
+
+function ago(iso) {
+  const mins = Math.round((Date.now() - new Date(iso)) / 60000);
+  if (mins < 1) return 'moments ago';
+  if (mins < 60) return `${mins} min ago`;
+  const h = Math.round(mins / 60);
+  if (h < 24) return h === 1 ? '1 hour ago' : `${h} hours ago`;
+  const d = Math.round(h / 24);
+  return d === 1 ? 'yesterday' : `${d} days ago`;
+}
+function stamp(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString([], { month: 'short', day: 'numeric' }) +
+    ', ' + d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+}
+function esc(s) {
+  return String(s).replace(/[&<>"]/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+}
+
+let payload = null;
+
+function renderMeta() {
+  if (!payload) return;
+  const el = document.getElementById('meta');
+  const stale = (Date.now() - new Date(payload.generated_at)) / 60000 > STALE_MINUTES;
+  el.innerHTML =
+    `Week <b>${payload.week}</b>` +
+    `<span><b>${payload.teams_live}</b> teams still alive</span>` +
+    `<span class="${stale ? 'stale' : ''}">Updated <b>${stamp(payload.generated_at)}</b> · ${ago(payload.generated_at)}` +
+    (stale ? ' — out of date, the update job may not have run.' : '') + `</span>` +
+    `<span><b>${payload.players_yet_to_play}</b> starters yet to play</span>`;
+}
+
+function render(data) {
+  payload = data;
+  const teams = [...data.teams].sort((a, b) => b.chop_prob - a.chop_prob);
+
+  // One shared point scale across every team, padded to round numbers.
+  const lo = Math.floor(Math.min(...teams.map(t => t.p10)) / 5) * 5;
+  const hi = Math.ceil(Math.max(...teams.map(t => t.p90)) / 5) * 5;
+  const pos = v => ((v - lo) / (hi - lo)) * 100;
+
+  renderMeta();
+
+  // hero — the team on the block
+  const top = teams[0], gap = top.chop_prob / (teams[1]?.chop_prob || top.chop_prob);
+  document.getElementById('hero').innerHTML = `
+    <div class="hero-inner" style="--band:${band(top.chop_prob)}">
+      <div>
+        <div class="hero-label">On the block</div>
+        <h2 class="hero-name">${esc(top.team)}</h2>
+        <div class="hero-note">Lowest projection in the field at
+          <b>${top.projection.toFixed(1)}</b> — roughly
+          <b>${gap.toFixed(1)}×</b> the next team's odds of the axe.
+          Likely score <b>${top.p10.toFixed(0)}–${top.p90.toFixed(0)}</b>.</div>
+      </div>
+      <div class="hero-pct">
+        <span class="big">${fmtPct(top.chop_prob)}</span>
+        <span class="cap">chance of the chop</span>
+      </div>
+    </div>`;
+
+  // axis ticks aligned to the range column
+  const axis = document.getElementById('axis');
+  axis.innerHTML = '';
+  for (let v = lo; v <= hi; v += (hi - lo) / 4) {
+    const s = document.createElement('span');
+    s.style.left = pos(v) + '%';
+    s.textContent = Math.round(v);
+    axis.appendChild(s);
+  }
+
+  // board rows
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+  teams.forEach((t, i) => {
+    const c = band(t.chop_prob);
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = `
+      <div class="rank">${i + 1}</div>
+      <div class="team">
+        <div class="name">${esc(t.team)}</div>
+        <div class="proj"><span class="projm">${t.projection.toFixed(1)} proj</span>likely ${t.p10.toFixed(0)}–${t.p90.toFixed(0)}</div>
+      </div>
+      <div class="range" style="--band:${c}"
+           title="p10 ${t.p10.toFixed(0)} · median ${t.median.toFixed(0)} · p90 ${t.p90.toFixed(0)}">
+        <div class="span" style="left:${pos(t.p10)}%;width:${pos(t.p90) - pos(t.p10)}%"></div>
+        <div class="median" style="left:${pos(t.median)}%"></div>
+        <div class="medlab" style="left:${pos(t.median)}%">${t.median.toFixed(0)}</div>
+      </div>
+      <div class="projcol">
+        <div class="v">${t.projection.toFixed(1)}</div>
+        <div class="u">pts</div>
+      </div>
+      <div class="chop">
+        <div class="v" style="color:${c}">${fmtPct(t.chop_prob)}</div>
+        <div class="b2">bot-2 ${fmtPct(t.bottom2_prob)}</div>
+      </div>`;
+    board.appendChild(row);
+  });
+
+  // legend
+  document.getElementById('legend').innerHTML =
+    [['Safe', 0.02], ['Exposed', 0.09], ['On the block', 0.21]]
+      .map(([l, p]) => `<span><i style="background:${band(p)}"></i>${l}</span>`).join('');
+
+  document.getElementById('method').innerHTML =
+    `<b>${data.sims.toLocaleString()}</b> Monte-Carlo simulations · shared-team ` +
+    `correlation factor <b>${data.rho}</b> · read-only Fleaflicker projections.`;
+}
+
+function fail(headline, detail) {
+  document.getElementById('meta').textContent = '';
+  document.getElementById('hero').hidden = true;
+  document.getElementById('boardhead').hidden = true;
+  document.getElementById('board').innerHTML =
+    `<div class="message"><b>${headline}</b>${detail}</div>`;
+}
+
+// Cache-bust: Pages serves data.json with a short but nonzero TTL.
+function load() {
+  fetch(`data.json?t=${Date.now()}`)
+    .then(r => r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)))
+    .then(render)
+    .catch(err => { if (!payload) fail(
+      'No data yet',
+      `The update job hasn't published data.json. (${err.message})`); });
+}
+
+load();
+setInterval(load, RELOAD_MS);      // refresh during game windows
+setInterval(renderMeta, 30000);    // keep the "x min ago" honest
+</script>
+</body>
+</html>
