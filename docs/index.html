@@ -410,18 +410,19 @@
     <div class="how">
       <h3>How the chop % is figured</h3>
       <ol class="steps">
-        <li><b>Start with the projections.</b> Every starter has a projected score —
-          the points Fleaflicker expects them to put up this week.</li>
-        <li><b>Nobody hits their projection exactly.</b> So instead of one number we
-          give each player a realistic range of outcomes — wide and boom-or-bust for
-          a WR or TE, tighter for a QB — and let teammates who play together rise and
-          fall as a group.</li>
-        <li><b>Play the week out 50,000 times.</b> In each run every player draws a
-          score from their range and we total up each team — 50,000 different ways the
-          same week could realistically go.</li>
-        <li><b>Count who finishes last.</b> In each run the lowest-scoring team gets
-          chopped. A team's <b>chop %</b> is just how often it came out last across all
-          50,000 runs.</li>
+        <li><div class="s"><b>Start with the projections.</b> Every starter has a
+          projected score — the points Fleaflicker expects them to put up this
+          week.</div></li>
+        <li><div class="s"><b>Nobody hits their projection exactly.</b> So instead of
+          one number we give each player a realistic range of outcomes — wide and
+          boom-or-bust for a WR or TE, tighter for a QB — and let teammates who play
+          together rise and fall as a group.</div></li>
+        <li><div class="s"><b>Play the week out 50,000 times.</b> In each run every
+          player draws a score from their range and we total up each team — 50,000
+          different ways the same week could realistically go.</div></li>
+        <li><div class="s"><b>Count who finishes last.</b> In each run the
+          lowest-scoring team gets chopped. A team's <b>chop %</b> is just how often it
+          came out last across all 50,000 runs.</div></li>
       </ol>
       <p class="takeaway">So a <b>20%</b> means: in about <b>1 out of every 5</b> ways
         the week could plausibly play out, this team posts the league low and loses its
@@ -546,7 +547,7 @@ function render(data) {
       <div class="rank">${i + 1}</div>
       <div class="team">
         <div class="name">${esc(t.team)}</div>
-        <div class="proj"><span class="projm">${t.projection.toFixed(1)} proj</span>likely ${t.p10.toFixed(0)}–${t.p90.toFixed(0)}</div>
+        <div class="proj"><span class="projm">${t.projection.toFixed(1)} proj</span>likely ${t.p10.toFixed(0)}–${t.p90.toFixed(0)} pts</div>
       </div>
       <div class="range" style="--band:${c}"
            title="p10 ${t.p10.toFixed(0)} · median ${t.median.toFixed(0)} · p90 ${t.p90.toFixed(0)}">
