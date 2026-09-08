@@ -47,9 +47,16 @@ DEFAULT_CV = 0.60
 # game-environment effects). 0 disables correlation entirely.
 DEFAULT_RHO = 0.15
 
-# Fraction of a projection still "live" for a player whose game is in progress.
-# Crude, but better than treating them as either finished or unstarted.
+# Fallback fraction of a projection still "live" for an in-progress player when
+# we can't tell how far along their game is (no kickoff timestamp). When we do
+# have a kickoff time we scale by wall-clock elapsed instead — see
+# elapsed_fraction — so this constant only bites on malformed game data.
 IN_PROGRESS_REMAINING = 0.45
+
+# Typical NFL broadcast length, kickoff to final whistle, in seconds. Fleaflicker
+# exposes a game's start time and status but no game clock, so we approximate how
+# much of a live player's projection is still to come from wall-clock elapsed.
+GAME_WALLCLOCK_SECONDS = 11_700  # ~3h15m
 
 
 # ---------------------------------------------------------------- API plumbing
@@ -157,6 +164,27 @@ def game_state(slot_obj) -> str:
     return "PRE"
 
 
+def elapsed_fraction(slot_obj, now_ms=None):
+    """
+    Fraction of a player's game elapsed by wall clock, clamped to [0, 1].
+
+    Fleaflicker gives a kickoff timestamp but no game clock, so progress is
+    approximated as (now - kickoff) / typical broadcast length. Returns None when
+    no usable kickoff time is present, letting callers fall back to a flat guess.
+    """
+    ts = find_str(slot_obj, ("starttime",))
+    if not ts:
+        return None
+    try:
+        kickoff_ms = float(ts)
+    except (TypeError, ValueError):
+        return None
+    if now_ms is None:
+        now_ms = time.time() * 1000.0
+    frac = (now_ms - kickoff_ms) / (GAME_WALLCLOCK_SECONDS * 1000.0)
+    return min(1.0, max(0.0, frac))
+
+
 def get_starters(league_id: int, team_id: int, season: int, week: int):
     data = fetch(
         "FetchRoster",
@@ -187,7 +215,16 @@ def get_starters(league_id: int, team_id: int, season: int, week: int):
             if state == "FINAL":
                 fixed, remaining = actual, 0.0
             elif state == "IN_PROGRESS":
-                fixed, remaining = actual, proj * IN_PROGRESS_REMAINING
+                # Bank what's scored; project only the slice of the game still to
+                # be played. Scale the pre-game projection by wall-clock time
+                # left, falling back to the flat estimate if we can't place the
+                # game on the clock. As the game ends, remaining -> 0 and the
+                # score converges to actual (and its simulated spread collapses).
+                frac = elapsed_fraction(slot)
+                remaining_frac = (
+                    (1.0 - frac) if frac is not None else IN_PROGRESS_REMAINING
+                )
+                fixed, remaining = actual, proj * remaining_frac
             else:
                 fixed, remaining = 0.0, proj
 
