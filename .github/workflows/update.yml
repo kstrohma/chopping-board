@@ -4,7 +4,8 @@ name: update chop data
 # themselves so the same schedule works across the November EDT -> EST shift
 # without editing. During game windows we ask every 5 minutes: GitHub drops a
 # large share of scheduled events, so over-requesting is how we keep the
-# effective cadence tight. Off-window, a single hourly baseline (:37) is enough.
+# effective cadence tight. Off-window, an every-30-min baseline (:07/:37, off
+# the throttled top-of-hour) keeps the page reasonably fresh between slates.
 #
 # Kickoffs in US Eastern, and where they land in UTC:
 #   Thu 20:15 ET (TNF)              -> Fri 00:15-05:00 UTC
@@ -28,7 +29,7 @@ on:
     - cron: '*/5 17-23 * * 4'       # Thanksgiving / holiday afternoon games
     - cron: '*/5 17-23 * * 6'       # late-season Saturday slate
     - cron: '*/5 0-5 * * 0'         # spillover from Saturday night games
-    - cron: '37 * * * *'            # hourly baseline, every day
+    - cron: '7,37 * * * *'          # every-30-min baseline (off :00), every day
   workflow_dispatch:                # manual refresh from the Actions tab
   repository_dispatch:              # optional external scheduler, if you add one
     types: [refresh]
