@@ -29,8 +29,6 @@ on:
     - cron: '*/5 17-23 * * 6'       # late-season Saturday slate
     - cron: '*/5 0-5 * * 0'         # spillover from Saturday night games
     - cron: '37 * * * *'            # hourly baseline, every day
-    # TEMPORARY (remove after testing): every 5 min, all hours, to observe cadence
-    - cron: '*/5 * * * *'
   workflow_dispatch:                # manual refresh from the Actions tab
   repository_dispatch:              # optional external scheduler, if you add one
     types: [refresh]
