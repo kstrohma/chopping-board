@@ -342,6 +342,93 @@
     .team .projm::after { content: " · "; color: var(--faint); font-weight: 400; }
   }
 
+  /* ------------------------------------------------------------- graveyard */
+
+  .graveyard {
+    margin-top: 2.6rem;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background:
+      linear-gradient(180deg, rgba(120,130,140,0.05), rgba(0,0,0,0) 45%),
+      var(--raise);
+    overflow: hidden;
+  }
+  .grave-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 1rem;
+    padding: 1.05rem 1.3rem 0.9rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .grave-head h3 {
+    margin: 0;
+    display: flex; align-items: center; gap: 0.55rem;
+    font-family: Oswald, sans-serif;
+    text-transform: uppercase; letter-spacing: 0.14em;
+    font-size: 0.9rem; font-weight: 600;
+    color: var(--bone);
+  }
+  .grave-head .skull { color: var(--danger); font-size: 1.05rem; line-height: 1; }
+  .grave-count {
+    font-family: Oswald, sans-serif;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    font-size: 0.74rem; color: var(--muted); white-space: nowrap;
+  }
+  .grave-count b { color: var(--safe); font-weight: 600; }
+
+  .graves { display: flex; flex-direction: column; }
+  .grave {
+    display: grid;
+    align-items: center;
+    gap: 0.75rem;
+    grid-template-columns: 3.4rem 1fr auto 1.1rem;
+    padding: 0.72rem 1.3rem;
+    border-bottom: 1px solid var(--line);
+    /* button reset — rows double as links to that week's final board */
+    width: 100%; text-align: left; margin: 0;
+    background: none; border-top: 0; border-left: 0; border-right: 0;
+    color: inherit; font: inherit;
+    cursor: pointer;
+  }
+  .grave:last-child { border-bottom: 0; }
+  .grave:hover, .grave:focus-visible {
+    background: rgba(201,74,59,0.06); outline: none;
+  }
+  .grave .wk {
+    font-family: Oswald, sans-serif; font-weight: 500;
+    font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--faint);
+  }
+  .grave .who {
+    font-family: Oswald, sans-serif; font-weight: 600;
+    font-size: 1.05rem; line-height: 1.12; color: var(--bone);
+    text-decoration: line-through;
+    text-decoration-color: rgba(201,74,59,0.55);
+    text-decoration-thickness: 2px;
+  }
+  .grave .score {
+    font-family: Oswald, sans-serif; font-weight: 600;
+    font-size: 0.95rem; color: var(--muted); text-align: right; white-space: nowrap;
+  }
+  .grave .score .u {
+    font-family: Archivo, sans-serif; font-size: 0.62rem;
+    text-transform: uppercase; letter-spacing: 0.06em; color: var(--faint);
+    margin-left: 0.18rem;
+  }
+  .grave .mark { color: var(--blood); text-align: center; font-size: 0.8rem; }
+
+  /* the week still in play — a non-clickable marker at the top */
+  .grave.pending { cursor: default; }
+  .grave.pending:hover { background: none; }
+  .grave.pending .who {
+    text-decoration: none; color: var(--muted); font-style: italic; font-weight: 500;
+  }
+  .grave.pending .mark { color: var(--safe); }
+
+  .graves .empty {
+    padding: 1.15rem 1.3rem 1.35rem;
+    color: var(--muted); font-size: 0.9rem; line-height: 1.5;
+  }
+
   /* ---------------------------------------------------------------- footer */
 
   footer {
@@ -447,6 +534,14 @@
     <div class="r" id="col4">Chop</div>
   </div>
   <div class="board" id="board"></div>
+
+  <section class="graveyard" id="graveyard" aria-label="Teams chopped this season" hidden>
+    <div class="grave-head">
+      <h3><span class="skull" aria-hidden="true">☠</span> The Graveyard</h3>
+      <span class="grave-count" id="graveCount"></span>
+    </div>
+    <div class="graves" id="graves"></div>
+  </section>
 
   <footer>
     <div class="legend" id="legend"></div>
@@ -729,6 +824,72 @@ function renderFinal(snap, entry) {
     `<span><i style="background:var(--safe)"></i>Survived</span>`;
 }
 
+// ----------------------------------------------- the season's graveyard
+
+// A running ledger of every chopped team, newest on top, read straight from
+// history/index.json. Independent of the week picker: it stays visible whether
+// you're looking at the live board or a past final week. Rows link to that
+// week's full final board.
+function renderGraveyard() {
+  const sec = document.getElementById('graveyard');
+  const list = document.getElementById('graves');
+  const countEl = document.getElementById('graveCount');
+  if (!sec) return;
+
+  const weeks = [...historyWeeks].sort((a, b) => b.week - a.week);
+  const eliminated = historyWeeks.reduce(
+    (n, w) => n + (Array.isArray(w.chopped) ? w.chopped.length : 1), 0);
+
+  sec.hidden = false;  // always shown, so the ledger is discoverable pre-season
+
+  const alive = currentData ? currentData.teams_live : null;
+  countEl.innerHTML = alive != null
+    ? `<b>${alive}</b> still alive`
+    : (eliminated ? `<b>${eliminated}</b> chopped` : '');
+
+  list.innerHTML = '';
+
+  // the week still in play — a marker so the live board and the ledger connect
+  if (currentData && !historyWeeks.some(w => w.week === currentData.week)) {
+    const p = document.createElement('div');
+    p.className = 'grave pending';
+    p.innerHTML =
+      `<span class="wk">Wk ${currentData.week}</span>` +
+      `<span class="who">· still on the board ·</span>` +
+      `<span class="score">live now</span>` +
+      `<span class="mark" aria-hidden="true">▲</span>`;
+    list.appendChild(p);
+  }
+
+  if (!weeks.length) {
+    const e = document.createElement('div');
+    e.className = 'empty';
+    e.textContent = 'No heads have rolled yet — the field is full. ' +
+      'The first name lands here once Week 1 goes final.';
+    list.appendChild(e);
+    return;
+  }
+
+  weeks.forEach(w => {
+    const name = Array.isArray(w.chopped) ? w.chopped.join(' & ') : w.chopped;
+    const b = document.createElement('button');
+    b.className = 'grave';
+    b.type = 'button';
+    b.title = `Week ${w.week} — open the full final board`;
+    b.innerHTML =
+      `<span class="wk">Wk ${w.week}</span>` +
+      `<span class="who">${esc(name)}</span>` +
+      `<span class="score">${Number(w.low_score).toFixed(1)}<span class="u">pts</span></span>` +
+      `<span class="mark" aria-hidden="true">▼</span>`;
+    b.addEventListener('click', () => {
+      document.getElementById('weeksel').value = String(w.week);
+      showWeek(w.week);
+      document.getElementById('board').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    list.appendChild(b);
+  });
+}
+
 function fail(headline, detail) {
   document.getElementById('meta').textContent = '';
   document.getElementById('hero').hidden = true;
@@ -797,9 +958,9 @@ function loadHistory() {
     .catch(() => { historyWeeks = []; });
 }
 
-Promise.all([load(), loadHistory()]).then(buildDropdown);
+Promise.all([load(), loadHistory()]).then(() => { buildDropdown(); renderGraveyard(); });
 
-setInterval(() => { if (mode === 'current') load(); }, RELOAD_MS);
+setInterval(() => { if (mode === 'current') load().then(renderGraveyard); }, RELOAD_MS);
 setInterval(() => { if (mode === 'current') renderMeta(); }, 30000);
 </script>
 </body>
