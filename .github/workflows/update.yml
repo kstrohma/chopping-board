@@ -2,8 +2,9 @@ name: update chop data
 
 # All crons are UTC. Windows are deliberately an hour wider than the games
 # themselves so the same schedule works across the November EDT -> EST shift
-# without editing. Game windows tick at :07 :22 :52 and the hourly baseline at
-# :37, so the two never collide and a window hour gets exactly four runs.
+# without editing. During game windows we ask every 5 minutes: GitHub drops a
+# large share of scheduled events, so over-requesting is how we keep the
+# effective cadence tight. Off-window, a single hourly baseline (:37) is enough.
 #
 # Kickoffs in US Eastern, and where they land in UTC:
 #   Thu 20:15 ET (TNF)              -> Fri 00:15-05:00 UTC
@@ -20,14 +21,16 @@ name: update chop data
 
 on:
   schedule:
-    - cron: '7,22,52 13-23 * * 0'   # Sunday daytime, London kick through late afternoon
-    - cron: '7,22,52 0-5 * * 1'     # Sunday night football
-    - cron: '7,22,52 0-5 * * 2'     # Monday night football
-    - cron: '7,22,52 0-5 * * 5'     # Thursday night football
-    - cron: '7,22,52 17-23 * * 4'   # Thanksgiving / holiday afternoon games
-    - cron: '7,22,52 17-23 * * 6'   # late-season Saturday slate
-    - cron: '7,22,52 0-5 * * 0'     # spillover from Saturday night games
+    - cron: '*/5 13-23 * * 0'       # Sunday daytime, London kick through late afternoon
+    - cron: '*/5 0-5 * * 1'         # Sunday night football
+    - cron: '*/5 0-5 * * 2'         # Monday night football
+    - cron: '*/5 0-5 * * 5'         # Thursday night football
+    - cron: '*/5 17-23 * * 4'       # Thanksgiving / holiday afternoon games
+    - cron: '*/5 17-23 * * 6'       # late-season Saturday slate
+    - cron: '*/5 0-5 * * 0'         # spillover from Saturday night games
     - cron: '37 * * * *'            # hourly baseline, every day
+    # TEMPORARY (remove after testing): every 5 min, all hours, to observe cadence
+    - cron: '*/5 * * * *'
   workflow_dispatch:                # manual refresh from the Actions tab
   repository_dispatch:              # optional external scheduler, if you add one
     types: [refresh]
