@@ -215,6 +215,8 @@
     bottom: 0.15rem;
     transform: translateX(-50%);
     white-space: nowrap;
+    color: var(--bone);
+    font-size: 0.8rem;
   }
   .board-head .axis span:first-child { transform: none; }
   .board-head .axis span:last-child { transform: translateX(-100%); }
@@ -243,9 +245,10 @@
   .team .name {
     font-family: Oswald, sans-serif;
     font-weight: 600;
-    font-size: 1.08rem;
+    font-size: 1.22rem;
     line-height: 1.12;
     letter-spacing: 0.005em;
+    color: var(--bone);
   }
   .team .proj {
     margin-top: 0.12rem;
@@ -318,10 +321,10 @@
   /* "n/N to play" — the roster-progress badge on each live row */
   .toplay {
     font-family: Oswald, sans-serif;
-    font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase;
-    color: var(--muted);
+    font-size: 0.74rem; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--bone);
   }
-  .toplay.live { color: var(--amber); font-weight: 600; font-size: 0.82rem; }
+  .toplay.live { color: var(--amber); font-weight: 600; font-size: 0.84rem; }
   .toplay::after { content: " · "; color: var(--faint); font-weight: 400; }
 
   .chop {
@@ -476,6 +479,10 @@
   footer .legend i.mk-med {
     width: 3px; height: 0.9rem; border-radius: 1px; vertical-align: -2px;
     background: var(--bone);
+  }
+  footer .legend i.mk-range {
+    width: 1.5rem; height: 0.62rem; border-radius: 2px; vertical-align: -1px;
+    background: var(--safe); opacity: 0.9;
   }
   footer a { color: var(--muted); }
 
@@ -762,12 +769,13 @@ function render(data) {
     board.appendChild(row);
   });
 
-  // legend
+  // legend — bar anatomy first, then the chop-severity colour ramp
   document.getElementById('legend').innerHTML =
+    `<span><i class="mk-range"></i>Projection range (10th–90th)</span>` +
+    `<span><i class="mk-now"></i>Current points</span>` +
+    `<span><i class="mk-med"></i>Projected median</span>` +
     [['Safe', 0.02], ['Exposed', 0.09], ['On the block', 0.21]]
-      .map(([l, p]) => `<span><i style="background:${band(p)}"></i>${l}</span>`).join('') +
-    `<span><i class="mk-now"></i>Score now</span>` +
-    `<span><i class="mk-med"></i>Projected median</span>`;
+      .map(([l, p]) => `<span><i style="background:${band(p)}"></i>${l}</span>`).join('');
 }
 
 // ------------------------------------------------ a finished week's results
