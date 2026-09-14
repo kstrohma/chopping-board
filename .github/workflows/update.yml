@@ -2,10 +2,15 @@ name: update chop data
 
 # All crons are UTC. Windows are deliberately an hour wider than the games
 # themselves so the same schedule works across the November EDT -> EST shift
-# without editing. During game windows we ask every 5 minutes: GitHub drops a
-# large share of scheduled events, so over-requesting is how we keep the
-# effective cadence tight. Off-window, an every-30-min baseline (:07/:37, off
-# the throttled top-of-hour) keeps the page reasonably fresh between slates.
+# without editing.
+#
+# These crons only need to START the job — the job then self-loops every 15 min
+# while games are live (see the "Build and refresh" step), which is what actually
+# holds the cadence, since GitHub drops most scheduled events but never a job
+# that's already running. The dense game-window */5 crons just maximise the odds
+# that *some* trigger lands soon after a wave kicks off; the every-30-min
+# baseline (:07/:37, off the throttled top-of-hour) starts a loop the rest of the
+# time and keeps the page fresh off-gameday.
 #
 # Kickoffs in US Eastern, and where they land in UTC:
 #   Thu 20:15 ET (TNF)              -> Fri 00:15-05:00 UTC
@@ -16,9 +21,9 @@ name: update chop data
 #   Thu holiday slate 12:30 ET      -> Thu 17:00-23:59 UTC
 #   Sat late-season slate 13:00 ET  -> Sat 17:00-23:59 UTC, spilling to Sun 00:00-05:00
 #
-# GitHub's scheduler is best effort: the docs note schedule events can be
-# delayed under load and queued jobs may be dropped. Treat 15 minutes as a
-# target, not a guarantee — the page shows its own data age for this reason.
+# Even so, treat 15 minutes as a target, not a hard guarantee: there can be a gap
+# at the very start of a game wave before the first trigger lands, and the page
+# shows its own data age for this reason.
 
 on:
   schedule:
@@ -34,10 +39,12 @@ on:
   repository_dispatch:              # optional external scheduler, if you add one
     types: [refresh]
 
-# Queue rather than cancel: two runs pushing to the same branch would race.
+# Cancel any run in flight when a new trigger fires: the job self-loops while
+# games are live (see below), so a fresh trigger should replace the running loop
+# with an immediate rebuild rather than queue behind a multi-hour job.
 concurrency:
   group: chop-data
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -45,7 +52,9 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # Long cap so the self-loop can cover a full game window; the loop itself
+    # exits as soon as no NFL games are in progress, so most runs are seconds.
+    timeout-minutes: 350
 
     steps:
       - uses: actions/checkout@v4
@@ -57,23 +66,52 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - name: Build data
+      # One trigger, then self-refresh every 15 min WHILE games are live. This
+      # sidesteps GitHub's unreliable scheduler: it drops most scheduled events,
+      # but a job already running is dependable. Any landed trigger (a game-window
+      # */5 tick, the 30-min baseline, a manual dispatch) starts a loop that holds
+      # a ~15-min cadence until the slate goes quiet, then exits. Off-gameday the
+      # loop does one build and stops, so behaviour there is unchanged.
+      - name: Build and refresh while games are live
         env:
           FF_LEAGUE_ID: '350513'
           FF_SEASON: '2026'
-        run: python build_data.py
-
-      - name: Commit if changed
         run: |
-          set -euo pipefail
+          set -uo pipefail
           git config user.name  'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add docs/data.json
-          if git diff --cached --quiet; then
-            echo "no change, nothing to commit"
-            exit 0
-          fi
-          week=$(python -c "import json;print(json.load(open('docs/data.json'))['week'])")
-          git commit -m "chop data: week ${week} ($(date -u '+%Y-%m-%d %H:%M UTC'))"
-          git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
-          git push
+
+          INTERVAL=900                              # 15 min between live refreshes
+          DEADLINE=$(( $(date +%s) + 330 * 60 ))    # hard stop ~5.5h in
+
+          while : ; do
+            if python build_data.py; then
+              git add docs/data.json
+              if git diff --cached --quiet; then
+                echo "no change, nothing to commit"
+              else
+                week=$(python -c "import json;print(json.load(open('docs/data.json'))['week'])")
+                git commit -m "chop data: week ${week} ($(date -u '+%Y-%m-%d %H:%M UTC'))"
+                if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push; then
+                  echo "pushed week ${week}"
+                else
+                  echo "push failed — will retry next loop"
+                fi
+              fi
+            else
+              echo "build failed — will retry next loop"
+            fi
+
+            # Keep looping only while NFL games are actually in progress.
+            live=$(python -c "import json;print(json.load(open('docs/data.json')).get('players_in_progress',0))" 2>/dev/null || echo 0)
+            if [ "${live:-0}" -le 0 ]; then
+              echo "no games in progress — done"
+              break
+            fi
+            if [ "$(date +%s)" -ge "$DEADLINE" ]; then
+              echo "max runtime reached — exiting (a later trigger will resume)"
+              break
+            fi
+            echo "games live (${live} players still playing) — refresh again in ${INTERVAL}s"
+            sleep "$INTERVAL"
+          done
