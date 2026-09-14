@@ -461,26 +461,28 @@
   }
   footer p { margin: 0.5rem 0; max-width: 46rem; }
   footer b { color: var(--muted); font-weight: 600; }
-  footer .legend {
+  .legend {
     display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem;
-    margin: 0.2rem 0 1rem;
+    margin: 1.3rem 0 0.2rem;
+    padding: 0 0.75rem;
     font-family: Oswald, sans-serif;
     text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.72rem;
     color: var(--muted);
   }
-  footer .legend i {
+  .legend:empty { display: none; }
+  .legend i {
     display: inline-block; width: 0.85rem; height: 0.85rem;
     border-radius: 2px; margin-right: 0.4rem; vertical-align: -1px;
   }
-  footer .legend i.mk-now {
+  .legend i.mk-now {
     width: 3px; height: 0.9rem; border-radius: 1px; vertical-align: -2px;
     background: var(--amber); box-shadow: 0 0 4px rgba(216,163,56,0.7);
   }
-  footer .legend i.mk-med {
+  .legend i.mk-med {
     width: 3px; height: 0.9rem; border-radius: 1px; vertical-align: -2px;
     background: var(--bone);
   }
-  footer .legend i.mk-range {
+  .legend i.mk-range {
     width: 1.5rem; height: 0.62rem; border-radius: 2px; vertical-align: -1px;
     background: var(--safe); opacity: 0.9;
   }
@@ -558,6 +560,8 @@
 
   <section class="hero" id="hero" aria-label="Most likely to be chopped"></section>
 
+  <div class="legend" id="legend" aria-label="How to read each row"></div>
+
   <div class="board-head" id="boardhead">
     <div></div>
     <div>Team</div>
@@ -576,8 +580,6 @@
   </section>
 
   <footer>
-    <div class="legend" id="legend"></div>
-
     <div class="how">
       <h3>How the chop % is figured</h3>
       <ol class="steps">
