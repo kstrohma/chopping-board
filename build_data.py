@@ -88,6 +88,9 @@ def main() -> int:
     banked_players = sum(
         1 for t in pool.values() for p in t["players"] if p["state"] == "FINAL"
     )
+    in_progress_players = sum(
+        1 for t in pool.values() for p in t["players"] if p["state"] == "IN_PROGRESS"
+    )
 
     payload = {
         "generated_at": dt.datetime.now(dt.timezone.utc)
@@ -101,6 +104,7 @@ def main() -> int:
         "teams_live": len(rows),
         "players_yet_to_play": live_players,
         "players_finished": banked_players,
+        "players_in_progress": in_progress_players,
         "teams": rows,
     }
 

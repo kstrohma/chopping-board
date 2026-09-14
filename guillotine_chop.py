@@ -322,6 +322,7 @@ def simulate(pool, n_sims=50_000, rho=DEFAULT_RHO, seed=None):
     rows = []
     for j, name in enumerate(names):
         col = scores[:, j]
+        players = pool[name]["players"]
         rows.append(
             {
                 "team": name,
@@ -334,6 +335,9 @@ def simulate(pool, n_sims=50_000, rho=DEFAULT_RHO, seed=None):
                 "chop_prob": float(chop[j]),
                 "bottom2_prob": float(bottom2[j]),
                 "safety": 1.0 - float(chop[j]),
+                # roster progress: starters still contributing points (not final)
+                "starters": len(players),
+                "to_play": sum(1 for p in players if p["remaining"] > 0),
             }
         )
     rows.sort(key=lambda r: -r["chop_prob"])
