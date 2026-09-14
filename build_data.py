@@ -26,6 +26,7 @@ LEAGUE_ID = int(os.environ.get("FF_LEAGUE_ID", 350513))
 SEASON = int(os.environ.get("FF_SEASON", 2026))
 N_SIMS = int(os.environ.get("FF_SIMS", 50_000))
 RHO = float(os.environ.get("FF_RHO", gc.DEFAULT_RHO))
+BUST = float(os.environ.get("FF_BUST", gc.DEFAULT_BUST))
 
 OUT = pathlib.Path(__file__).parent / "docs" / "data.json"
 
@@ -72,6 +73,7 @@ def main() -> int:
     ap.add_argument("--week", type=int, default=None)
     ap.add_argument("--sims", type=int, default=N_SIMS)
     ap.add_argument("--rho", type=float, default=RHO)
+    ap.add_argument("--bust", type=float, default=BUST)
     ap.add_argument("--exclude", type=int, nargs="*", default=[])
     ap.add_argument("--out", type=pathlib.Path, default=OUT)
     args = ap.parse_args()
@@ -80,7 +82,7 @@ def main() -> int:
     print(f"building week {week}", file=sys.stderr)
 
     pool = gc.build_pool(args.league, args.season, week, set(args.exclude))
-    rows = gc.simulate(pool, n_sims=args.sims, rho=args.rho)
+    rows = gc.simulate(pool, n_sims=args.sims, rho=args.rho, bust=args.bust)
 
     live_players = sum(
         1 for t in pool.values() for p in t["players"] if p["remaining"] > 0
@@ -101,6 +103,7 @@ def main() -> int:
         "week": week,
         "sims": args.sims,
         "rho": args.rho,
+        "bust": args.bust,
         "teams_live": len(rows),
         "players_yet_to_play": live_players,
         "players_finished": banked_players,

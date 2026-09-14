@@ -47,6 +47,13 @@ DEFAULT_CV = 0.60
 # game-environment effects). 0 disables correlation entirely.
 DEFAULT_RHO = 0.15
 
+# Chance a yet-to-play (or still-playing) starter contributes ~nothing the rest
+# of the way: a scratch, an early injury, a benching. The Gamma model puts almost
+# no mass near zero, so without this a team that trails on current points but has
+# players still to go shows an unrealistic 0% chop — its downside literally isn't
+# represented. Small but nonzero; tune against your league's no-show rate.
+DEFAULT_BUST = 0.05
+
 # Fallback fraction of a projection still "live" for an in-progress player when
 # we can't tell how far along their game is (no kickoff timestamp). When we do
 # have a kickoff time we scale by wall-clock elapsed instead — see
@@ -273,13 +280,19 @@ def build_pool(league_id, season, week, exclude, delay=0.3, verbose=True):
 # ------------------------------------------------------------------ simulation
 
 
-def simulate(pool, n_sims=50_000, rho=DEFAULT_RHO, seed=None):
+def simulate(pool, n_sims=50_000, rho=DEFAULT_RHO, seed=None, bust=DEFAULT_BUST):
     """
     Per player:  score ~ Gamma(mean = projection * G_team, cv = cv[position])
     where G_team is a shared Gamma(mean 1, cv = rho) factor for every player on
     the same NFL team. Gamma is used rather than Normal because weekly scores
     are right-skewed and bounded below at roughly zero; a Normal model puts
     mass on negative scores and understates ceiling weeks.
+
+    The draw is zero-inflated: with probability `bust` a still-live player is a
+    no-show (scratch, early injury, benching) and its remaining points collapse
+    to ~0. The plain Gamma has almost no mass near zero, so without this a team
+    trailing on current points but with players left is scored as un-catchable
+    (0% chop) — the exact floor risk that decides a guillotine week goes missing.
 
     Independence across players would make league-minimum estimates too
     confident, hence the shared factor. Teams with no remaining players are
@@ -312,7 +325,13 @@ def simulate(pool, n_sims=50_000, rho=DEFAULT_RHO, seed=None):
                 m = mean * gf[:, uidx[p["unit"]]]
             else:
                 m = np.full(n_sims, mean)
-            s += rng.gamma(shape, m / shape)
+            draw = rng.gamma(shape, m / shape)
+            if bust > 0:
+                # zero-inflation: a small share of outcomes are no-shows whose
+                # remaining points collapse to ~0 — the goose-egg tail the Gamma
+                # cannot reach on its own.
+                draw *= rng.random(n_sims) >= bust
+            s += draw
         scores[:, j] = s
 
     ranks = scores.argsort(axis=1).argsort(axis=1)  # 0 == lowest score
@@ -373,6 +392,8 @@ def main():
     ap.add_argument("--sims", type=int, default=50_000)
     ap.add_argument("--rho", type=float, default=DEFAULT_RHO,
                     help="shared per-NFL-team factor CV; 0 for independence")
+    ap.add_argument("--bust", type=float, default=DEFAULT_BUST,
+                    help="per-player no-show probability; 0 disables zero-inflation")
     ap.add_argument("--seed", type=int, default=None)
     ap.add_argument("--exclude", type=int, nargs="*", default=[],
                     help="team ids to drop (already chopped)")
@@ -388,7 +409,7 @@ def main():
 
     print("Fetching rosters...", file=sys.stderr)
     pool = build_pool(args.league, args.season, args.week, set(args.exclude))
-    rows = simulate(pool, n_sims=args.sims, rho=args.rho, seed=args.seed)
+    rows = simulate(pool, n_sims=args.sims, rho=args.rho, seed=args.seed, bust=args.bust)
     print_table(rows, args.week)
 
     if args.json:
