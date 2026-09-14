@@ -364,7 +364,9 @@
     .rank { grid-area: rank; align-self: start; padding-top: 0.15rem; }
     .team { grid-area: team; }
     .chop { grid-area: chop; align-self: start; }
-    .range { grid-area: range; }
+    /* the bar sits under the team text here, so leave room for the score label
+       that floats above the amber marker */
+    .range { grid-area: range; margin-top: 1rem; }
     .projcol { display: none; }
     .team .projm { display: inline; color: var(--bone); font-weight: 600; }
     .team .projm::after { content: " · "; color: var(--faint); font-weight: 400; }
