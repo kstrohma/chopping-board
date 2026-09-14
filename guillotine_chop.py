@@ -52,7 +52,7 @@ DEFAULT_RHO = 0.15
 # no mass near zero, so without this a team that trails on current points but has
 # players still to go shows an unrealistic 0% chop — its downside literally isn't
 # represented. Small but nonzero; tune against your league's no-show rate.
-DEFAULT_BUST = 0.05
+DEFAULT_BUST = 0.03
 
 # Fallback fraction of a projection still "live" for an in-progress player when
 # we can't tell how far along their game is (no kickoff timestamp). When we do
