@@ -308,6 +308,14 @@
     border-radius: 1px;
     transform: translateX(-1.5px);
   }
+  /* the current score printed just above its amber marker */
+  .range .nowlab {
+    position: absolute; top: -1rem;
+    font-family: Oswald, sans-serif;
+    font-size: 0.74rem; font-weight: 600; line-height: 1;
+    color: var(--amber);
+    white-space: nowrap; pointer-events: none;
+  }
   .range .medlab {
     position: absolute; top: 50%;
     transform: translate(-50%, -50%);
@@ -748,6 +756,9 @@ function render(data) {
     // current-score marker, clamped to the shared scale (a team well below its
     // projected range pins to the left edge — they've a lot still to come)
     const bankPos = Math.max(0, Math.min(100, pos(t.banked)));
+    // keep the score label from clipping the bar's edges
+    const labShift = bankPos < 8 ? 'translateX(0)'
+      : bankPos > 92 ? 'translateX(-100%)' : 'translateX(-50%)';
     const row = document.createElement('div');
     row.className = 'row';
     row.innerHTML = `
@@ -761,6 +772,7 @@ function render(data) {
         <div class="span" style="left:${pos(t.p10)}%;width:${pos(t.p90) - pos(t.p10)}%"></div>
         <div class="median" style="left:${pos(t.median)}%"></div>
         <div class="now" style="left:${bankPos}%" title="current score ${t.banked.toFixed(1)}"></div>
+        <div class="nowlab" style="left:${bankPos}%;transform:${labShift}" title="current score ${t.banked.toFixed(1)}">${t.banked.toFixed(0)}</div>
       </div>
       <div class="projcol">
         <div class="v">${t.banked.toFixed(1)}</div>
