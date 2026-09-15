@@ -1,3 +1,12 @@
 {
-  "weeks": []
+  "weeks": [
+    {
+      "week": 1,
+      "chopped": "Semmel Warriors",
+      "low_score": 68.82,
+      "archived_at": "2026-09-15T07:43:04+00:00",
+      "json": "history/week-01.json",
+      "csv": "history/week-01.csv"
+    }
+  ]
 }

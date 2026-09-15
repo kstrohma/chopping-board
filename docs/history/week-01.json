@@ -1,0 +1,117 @@
+{
+  "week": 1,
+  "final": true,
+  "archived_at": "2026-09-15T07:43:04+00:00",
+  "chopped": "Semmel Warriors",
+  "low_score": 68.82,
+  "teams": [
+    {
+      "team": "Semmel Warriors",
+      "team_id": 1806174,
+      "score": 68.82,
+      "chopped": true
+    },
+    {
+      "team": "the ones who remain!",
+      "team_id": 1805785,
+      "score": 69.92,
+      "chopped": false
+    },
+    {
+      "team": "pfue's Team",
+      "team_id": 1807498,
+      "score": 70.42,
+      "chopped": false
+    },
+    {
+      "team": "Lutte Titanesque",
+      "team_id": 1805535,
+      "score": 70.74,
+      "chopped": false
+    },
+    {
+      "team": "Heads Will Roll",
+      "team_id": 1805647,
+      "score": 72.16,
+      "chopped": false
+    },
+    {
+      "team": "Clesch's Team",
+      "team_id": 1805653,
+      "score": 73.54,
+      "chopped": false
+    },
+    {
+      "team": "Franchise Revolution",
+      "team_id": 1805654,
+      "score": 86.76,
+      "chopped": false
+    },
+    {
+      "team": "RollercoasterShow",
+      "team_id": 1806075,
+      "score": 88.3,
+      "chopped": false
+    },
+    {
+      "team": "Jouer Tellement Fort",
+      "team_id": 1805649,
+      "score": 93.58,
+      "chopped": false
+    },
+    {
+      "team": "Headless Packers",
+      "team_id": 1805646,
+      "score": 94.76,
+      "chopped": false
+    },
+    {
+      "team": "Headless Vandemic",
+      "team_id": 1805651,
+      "score": 95.7,
+      "chopped": false
+    },
+    {
+      "team": "Die Bienen",
+      "team_id": 1806078,
+      "score": 100.9,
+      "chopped": false
+    },
+    {
+      "team": "Marie-Antoinette von \u00d6sterreich-Lothringen",
+      "team_id": 1805648,
+      "score": 108.86,
+      "chopped": false
+    },
+    {
+      "team": "Commitment to Execution",
+      "team_id": 1806084,
+      "score": 111.16,
+      "chopped": false
+    },
+    {
+      "team": "The Chopfather",
+      "team_id": 1805644,
+      "score": 119.1,
+      "chopped": false
+    },
+    {
+      "team": "Head Hunter",
+      "team_id": 1805715,
+      "score": 121.6,
+      "chopped": false
+    },
+    {
+      "team": "Always open",
+      "team_id": 1805645,
+      "score": 130.76,
+      "chopped": false
+    },
+    {
+      "team": "Simonceo's Team",
+      "team_id": 1806254,
+      "score": 136.06,
+      "chopped": false
+    }
+  ]
+}

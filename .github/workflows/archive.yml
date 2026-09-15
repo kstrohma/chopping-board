@@ -1,13 +1,15 @@
 name: archive week
 
 # Snapshots the just-finished week's FINAL scores into docs/history/ for the
-# history dropdown. Runs Wednesday, long after Monday Night Football has gone
-# final, so the week is settled. 12:00 UTC is ~14:00 in Austria during the
-# season (CEST); it lands at 13:00 local after the late-October shift to CET.
+# history dropdown. Runs Tuesday 05:00 UTC — 07:00 in Vienna during the CEST part
+# of the season (through late October), 06:00 after the switch to CET. That's
+# after Monday Night Football has gone final, so the week is settled and the
+# result is locked in before waivers run. (To keep it at exactly 07:00 Vienna
+# through the winter, bump this to '0 6 * * 2' after the DST change.)
 
 on:
   schedule:
-    - cron: '0 12 * * 3'   # Wednesday ~14:00 Austria
+    - cron: '0 5 * * 2'    # Tuesday 07:00 Vienna (CEST)
   workflow_dispatch:
     inputs:
       week:
