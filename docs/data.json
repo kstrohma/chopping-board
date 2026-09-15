@@ -1,8 +1,10 @@
 {
-  "generated_at": "2026-09-15T07:57:46+00:00",
+  "generated_at": "2026-09-15T08:03:55+00:00",
   "league_id": 350513,
   "season": 2026,
   "week": 1,
+  "final": true,
+  "phase": "final",
   "sims": 50000,
   "rho": 0.15,
   "bust": 0.03,
