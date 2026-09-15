@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-15T03:14:45+00:00",
+  "generated_at": "2026-09-15T03:29:54+00:00",
   "league_id": 350513,
   "season": 2026,
   "week": 1,
@@ -7,9 +7,9 @@
   "rho": 0.15,
   "bust": 0.03,
   "teams_live": 18,
-  "players_yet_to_play": 10,
-  "players_finished": 134,
-  "players_in_progress": 10,
+  "players_yet_to_play": 0,
+  "players_finished": 144,
+  "players_in_progress": 0,
   "teams": [
     {
       "team": "Semmel Warriors",
@@ -42,16 +42,16 @@
     {
       "team": "Always open",
       "team_id": 1805645,
-      "projection": 131.9769990196999,
+      "projection": 130.76,
       "banked": 130.76,
-      "median": 131.88193014245886,
-      "p10": 131.33070690354847,
-      "p90": 132.66602653997464,
+      "median": 130.76,
+      "p10": 130.76,
+      "p90": 130.76,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "Head Hunter",
@@ -112,58 +112,58 @@
     {
       "team": "Die Bienen",
       "team_id": 1806078,
-      "projection": 101.53357401023285,
+      "projection": 100.9,
       "banked": 100.9,
-      "median": 101.45038011875837,
-      "p10": 101.10920533573295,
-      "p90": 102.00829035585566,
+      "median": 100.9,
+      "p10": 100.9,
+      "p90": 100.9,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "Headless Vandemic",
       "team_id": 1805651,
-      "projection": 96.74897716735401,
+      "projection": 95.6999997,
       "banked": 95.6999997,
-      "median": 96.60737164035089,
-      "p10": 96.04516001413994,
-      "p90": 97.54247025464946,
+      "median": 95.6999997,
+      "p10": 95.6999997,
+      "p90": 95.6999997,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "Headless Packers",
       "team_id": 1805646,
-      "projection": 95.36949518248638,
+      "projection": 94.76,
       "banked": 94.76,
-      "median": 95.25000373870606,
-      "p10": 94.89203559769093,
-      "p90": 95.9391792630028,
+      "median": 94.76,
+      "p10": 94.76,
+      "p90": 94.76,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "Jouer Tellement Fort",
       "team_id": 1805649,
-      "projection": 94.41684250855577,
+      "projection": 93.579998,
       "banked": 93.579998,
-      "median": 94.27074766050819,
-      "p10": 93.79223223010302,
-      "p90": 95.14344791652566,
+      "median": 93.579998,
+      "p10": 93.579998,
+      "p90": 93.579998,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "RollercoasterShow",
@@ -196,16 +196,16 @@
     {
       "team": "Clesch's Team",
       "team_id": 1805653,
-      "projection": 74.89765175407486,
-      "banked": 73.64,
-      "median": 74.79466999252485,
-      "p10": 74.22981008105876,
-      "p90": 75.60797166077211,
+      "projection": 73.5399996,
+      "banked": 73.5399996,
+      "median": 73.5399996,
+      "p10": 73.5399996,
+      "p90": 73.5399996,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "Heads Will Roll",
@@ -224,16 +224,16 @@
     {
       "team": "Lutte Titanesque",
       "team_id": 1805535,
-      "projection": 72.32078047752785,
+      "projection": 70.7399996,
       "banked": 70.7399996,
-      "median": 72.16591985070878,
-      "p10": 71.43993713508786,
-      "p90": 73.24474173852181,
+      "median": 70.7399996,
+      "p10": 70.7399996,
+      "p90": 70.7399996,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 2
+      "to_play": 0
     },
     {
       "team": "pfue's Team",
@@ -244,7 +244,7 @@
       "p10": 70.42,
       "p90": 70.42,
       "chop_prob": 0.0,
-      "bottom2_prob": 0.90602,
+      "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
       "to_play": 0
@@ -252,16 +252,16 @@
     {
       "team": "the ones who remain!",
       "team_id": 1805785,
-      "projection": 71.14329401055683,
+      "projection": 69.92,
       "banked": 69.92,
-      "median": 71.016642620021,
-      "p10": 70.43276885923883,
-      "p90": 71.90446166059932,
+      "median": 69.92,
+      "p10": 69.92,
+      "p90": 69.92,
       "chop_prob": 0.0,
-      "bottom2_prob": 0.09398,
+      "bottom2_prob": 1.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 2
+      "to_play": 0
     }
   ]
 }
