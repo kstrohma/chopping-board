@@ -94,9 +94,32 @@ the current scoring period to the last week whose starters have all finished),
 so the scheduled job needs no week number. Archive one explicitly with
 `python archive.py --week 1`.
 
-The `archive week` workflow runs every Wednesday at 12:00 UTC (~14:00 in Austria
-during the season), well after Monday Night Football has gone final. Trigger it
-by hand from the Actions tab — with an optional week number — to backfill.
+The `archive week` workflow runs **Tuesday 05:00 UTC (07:00 Vienna, CEST)**, after
+Monday Night Football has gone final, so the result is locked in before waivers.
+Trigger it by hand from the Actions tab — with an optional week number — to
+backfill. (If a chopped team's roster is cleared before the archive runs, that
+team drops out of the live pool; reconstruct its row by injecting its final score
+— see the Week 1 reconstruction commit for the pattern.)
+
+## Weekly cadence (live → final → rollover)
+
+`build_data.py` drives the "current" view off the league's own Vienna calendar,
+not Fleaflicker's scoring period, so the transitions are predictable:
+
+```
+Wed 14:00 Vienna   → week N opens, board goes LIVE (chop odds)
+  … games Thu–Mon, scores firm up …
+Tue 07:00 Vienna   → week N shown as FINAL (results + who got chopped)
+Wed 14:00 Vienna   → ROLLOVER: week N+1 opens live (after waivers clear)
+```
+
+Boundaries are compared in Vienna wall-clock time, so the CEST→CET switch needs
+no change — "Tuesday 07:00" and "Wednesday 14:00" hold year-round. The rollover
+is automatic; there's nothing to run by hand. The anchor for week 1 is
+`SEASON_ANCHOR` in `build_data.py` (Wed 2026-09-09 14:00); adjust it per season.
+The FINAL view is only shown once the week's `archive.py` snapshot exists, so the
+just-chopped team stays in the picture even after its roster is cleared. Force a
+specific week with `--week` / `FF_WEEK` if you ever need to override the calendar.
 
 ## Scheduling
 

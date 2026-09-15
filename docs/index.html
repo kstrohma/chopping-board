@@ -971,22 +971,47 @@ let historyWeeks = [];
 function buildDropdown() {
   const sel = document.getElementById('weeksel');
   sel.innerHTML = '';
+  const finalNow = currentData && currentData.final;
   const cur = document.createElement('option');
   cur.value = 'current';
-  cur.textContent = currentData ? `Current · Week ${currentData.week}` : 'Current week';
+  cur.textContent = currentData
+    ? (finalNow ? `Week ${currentData.week} · final` : `Current · Week ${currentData.week}`)
+    : 'Current week';
   sel.appendChild(cur);
-  [...historyWeeks].sort((a, b) => b.week - a.week).forEach(w => {
-    const o = document.createElement('option');
-    o.value = String(w.week);
-    o.textContent = `Week ${w.week} · final`;
-    sel.appendChild(o);
-  });
+  // While the current week is shown as final, its archive would duplicate the
+  // "Current" entry — skip it in the list.
+  [...historyWeeks].sort((a, b) => b.week - a.week)
+    .filter(w => !(finalNow && String(w.week) === String(currentData.week)))
+    .forEach(w => {
+      const o = document.createElement('option');
+      o.value = String(w.week);
+      o.textContent = `Week ${w.week} · final`;
+      sel.appendChild(o);
+    });
+}
+
+// The default "current" view. Between Tuesday 07:00 and the Wednesday 14:00
+// rollover the week is final: render its archived results (which still include
+// the just-chopped team, cleared from live rosters). Otherwise, the live board.
+function renderCurrent() {
+  if (!currentData) return;
+  if (currentData.final) {
+    const entry = historyWeeks.find(w => String(w.week) === String(currentData.week));
+    if (entry) {
+      fetch(`${entry.json}?t=${Date.now()}`)
+        .then(r => r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)))
+        .then(snap => { if (mode === 'current') renderFinal(snap, entry); })
+        .catch(() => render(currentData));
+      return;
+    }
+  }
+  render(currentData);
 }
 
 function showCurrent() {
   mode = 'current';
-  if (currentData) render(currentData);
-  else load();
+  if (currentData) renderCurrent();
+  else load().then(() => { renderCurrent(); renderGraveyard(); });
 }
 
 function showWeek(week) {
@@ -1009,7 +1034,7 @@ document.getElementById('weeksel').addEventListener('change', e => {
 function load() {
   return fetch(`data.json?t=${Date.now()}`)
     .then(r => r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)))
-    .then(data => { currentData = data; if (mode === 'current') render(data); })
+    .then(data => { currentData = data; if (mode === 'current') renderCurrent(); })
     .catch(err => { if (!payload && mode === 'current') fail(
       'No data yet',
       `The update job hasn't published data.json. (${err.message})`); });
@@ -1022,7 +1047,11 @@ function loadHistory() {
     .catch(() => { historyWeeks = []; });
 }
 
-Promise.all([load(), loadHistory()]).then(() => { buildDropdown(); renderGraveyard(); });
+Promise.all([load(), loadHistory()]).then(() => {
+  buildDropdown();
+  if (mode === 'current') renderCurrent();  // now that history is loaded, the
+  renderGraveyard();                        // final-week routing can resolve
+});
 
 setInterval(() => { if (mode === 'current') load().then(renderGraveyard); }, RELOAD_MS);
 setInterval(() => { if (mode === 'current') renderMeta(); }, 30000);
