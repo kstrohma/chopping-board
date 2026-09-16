@@ -34,6 +34,12 @@ on:
     - cron: '*/5 17-23 * * 4'       # Thanksgiving / holiday afternoon games
     - cron: '*/5 17-23 * * 6'       # late-season Saturday slate
     - cron: '*/5 0-5 * * 0'         # spillover from Saturday night games
+    # transition bursts — the weekly flips (build_data's Vienna calendar) are the
+    # moments people check, but the 30-min baseline drops too many ticks to land
+    # near them promptly, so over-request across each. Hour windows cover both
+    # CEST and CET so no DST edit is needed.
+    - cron: '*/10 5-6 * * 2'        # Tue 07:00 Vienna: week flips to FINAL
+    - cron: '*/10 12-13 * * 3'      # Wed 14:00 Vienna: rollover to the next week
     - cron: '7,37 * * * *'          # every-30-min baseline (off :00), every day
   workflow_dispatch:                # manual refresh from the Actions tab
   repository_dispatch:              # optional external scheduler, if you add one
