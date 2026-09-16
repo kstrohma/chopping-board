@@ -82,14 +82,16 @@ page can show them later. It writes three things under `docs/history/`:
 ```
 week-NN.json    the finished-week board the page renders
 week-NN.csv     that week's final scores, for download / spreadsheets
-season.csv      every completed week in one table (a leading `week` column)
+season.csv      wide season grid: one row per team, two columns per week
 index.json      the list of archived weeks the dropdown reads
 ```
 
-`season.csv` is the always-available cumulative export: it's rebuilt from all the
-week-NN.json snapshots on every archive run, so it grows one week at a time as
-each finalizes and never needs the per-week files stitched together by hand. The
-page links it (**↓ Season CSV**) whenever at least one week is archived.
+`season.csv` is the always-available cumulative export, laid out wide: one row per
+team (A–Z) and, for every completed week, a `wkN_score` / `wkN_rank` pair (rank 1
+= week low). A team's cells go blank from the week after it's chopped, so the grid
+fills in tidily over the season. It's rebuilt from the week-NN.json snapshots on
+every archive run — so it never needs the per-week files stitched together by
+hand. The page links it (**↓ Season CSV**) whenever at least one week is archived.
 
 The page's **View** dropdown offers "Current · Week N" (the live chop odds) plus
 every archived week. Picking a past week shows that week's final scores and flags

@@ -1,19 +1,19 @@
-week,rank,team,final_score,chopped
-1,1,Semmel Warriors,68.82,yes
-1,2,the ones who remain!,69.92,no
-1,3,pfue's Team,70.42,no
-1,4,Lutte Titanesque,70.74,no
-1,5,Heads Will Roll,72.16,no
-1,6,Clesch's Team,73.54,no
-1,7,Franchise Revolution,86.76,no
-1,8,RollercoasterShow,88.30,no
-1,9,Jouer Tellement Fort,93.58,no
-1,10,Headless Packers,94.76,no
-1,11,Headless Vandemic,95.70,no
-1,12,Die Bienen,100.90,no
-1,13,Marie-Antoinette von Österreich-Lothringen,108.86,no
-1,14,Commitment to Execution,111.16,no
-1,15,The Chopfather,119.10,no
-1,16,Head Hunter,121.60,no
-1,17,Always open,130.76,no
-1,18,Simonceo's Team,136.06,no
+team,wk1_score,wk1_rank
+Always open,130.76,17
+Clesch's Team,73.54,6
+Commitment to Execution,111.16,14
+Die Bienen,100.90,12
+Franchise Revolution,86.76,7
+Head Hunter,121.60,16
+Headless Packers,94.76,10
+Headless Vandemic,95.70,11
+Heads Will Roll,72.16,5
+Jouer Tellement Fort,93.58,9
+Lutte Titanesque,70.74,4
+Marie-Antoinette von Österreich-Lothringen,108.86,13
+pfue's Team,70.42,3
+RollercoasterShow,88.30,8
+Semmel Warriors,68.82,1
+Simonceo's Team,136.06,18
+The Chopfather,119.10,15
+the ones who remain!,69.92,2

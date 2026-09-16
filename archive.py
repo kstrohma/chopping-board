@@ -128,21 +128,37 @@ def write_season_csv():
     """
     Rebuild the cumulative season CSV from every archived week.
 
-    One always-available file — `docs/history/season.csv` — holding every
-    completed week's final board in a single table (a leading `week` column), so
-    it can be fetched once instead of stitching the per-week CSVs together. Rebuilt
-    from the week-NN.json snapshots (the source of truth) on each archive run, so
-    it stays consistent and only ever contains weeks that are actually final.
+    One always-available file — `docs/history/season.csv` — laid out wide: one row
+    per team (A–Z), two columns per completed week (`wkN_score`, `wkN_rank`, rank 1
+    = week low). A team's cells are blank for any week it didn't play — i.e. from
+    the week after it was chopped onward — so the sheet fills in neatly over the
+    season. Rebuilt from the week-NN.json snapshots (the source of truth) on each
+    archive run, so it stays consistent and only ever covers finalized weeks.
     """
+    per_week = {}        # week -> {team: (score, rank)}
+    teams = set()
+    for wf in sorted(HISTORY.glob("week-*.json")):
+        snap = json.loads(wf.read_text())
+        board = {}
+        for rank, r in enumerate(snap["teams"], 1):
+            board[r["team"]] = (r["score"], rank)
+            teams.add(r["team"])
+        per_week[snap["week"]] = board
+    weeks = sorted(per_week)
+
     path = HISTORY / "season.csv"
     with path.open("w", newline="") as fh:
         w = csv.writer(fh)
-        w.writerow(["week", "rank", "team", "final_score", "chopped"])
-        for wf in sorted(HISTORY.glob("week-*.json")):
-            snap = json.loads(wf.read_text())
-            for i, r in enumerate(snap["teams"], 1):
-                w.writerow([snap["week"], i, r["team"],
-                            f"{r['score']:.2f}", "yes" if r["chopped"] else "no"])
+        header = ["team"]
+        for wk in weeks:
+            header += [f"wk{wk}_score", f"wk{wk}_rank"]
+        w.writerow(header)
+        for team in sorted(teams, key=str.lower):
+            row = [team]
+            for wk in weeks:
+                cell = per_week[wk].get(team)
+                row += [f"{cell[0]:.2f}", cell[1]] if cell else ["", ""]
+            w.writerow(row)
     return path
 
 
