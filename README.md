@@ -81,13 +81,19 @@ page can show them later. It writes three things under `docs/history/`:
 
 ```
 week-NN.json    the finished-week board the page renders
-week-NN.csv     raw final scores, for download / spreadsheets
+week-NN.csv     that week's final scores, for download / spreadsheets
+season.csv      every completed week in one table (a leading `week` column)
 index.json      the list of archived weeks the dropdown reads
 ```
 
+`season.csv` is the always-available cumulative export: it's rebuilt from all the
+week-NN.json snapshots on every archive run, so it grows one week at a time as
+each finalizes and never needs the per-week files stitched together by hand. The
+page links it (**↓ Season CSV**) whenever at least one week is archived.
+
 The page's **View** dropdown offers "Current · Week N" (the live chop odds) plus
 every archived week. Picking a past week shows that week's final scores and flags
-who got chopped, with a CSV download link.
+who got chopped, with a per-week CSV download link.
 
 `archive.py` auto-detects the most recently completed week (it walks back from
 the current scoring period to the last week whose starters have all finished),

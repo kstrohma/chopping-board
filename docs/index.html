@@ -563,6 +563,8 @@
     <div class="weekbar">
       <label for="weeksel">View</label>
       <select id="weeksel" aria-label="Choose a week"></select>
+      <a id="seasoncsv" class="csv" download="chop-season.csv"
+         title="Every completed week's final scores in one file" hidden>↓ Season CSV</a>
       <a id="csvlink" class="csv" hidden>↓ CSV</a>
     </div>
     <div class="meta" id="meta">Loading…</div>
@@ -971,6 +973,12 @@ let historyWeeks = [];
 function buildDropdown() {
   const sel = document.getElementById('weeksel');
   sel.innerHTML = '';
+  // Always-available cumulative export — shown once any week is final.
+  const season = document.getElementById('seasoncsv');
+  if (season) {
+    season.hidden = historyWeeks.length === 0;
+    season.href = `history/season.csv?t=${Date.now()}`;
+  }
   const finalNow = currentData && currentData.final;
   const cur = document.createElement('option');
   cur.value = 'current';

@@ -124,6 +124,28 @@ def update_index(payload, stem):
     idx_path.write_text(json.dumps(index, indent=2) + "\n")
 
 
+def write_season_csv():
+    """
+    Rebuild the cumulative season CSV from every archived week.
+
+    One always-available file — `docs/history/season.csv` — holding every
+    completed week's final board in a single table (a leading `week` column), so
+    it can be fetched once instead of stitching the per-week CSVs together. Rebuilt
+    from the week-NN.json snapshots (the source of truth) on each archive run, so
+    it stays consistent and only ever contains weeks that are actually final.
+    """
+    path = HISTORY / "season.csv"
+    with path.open("w", newline="") as fh:
+        w = csv.writer(fh)
+        w.writerow(["week", "rank", "team", "final_score", "chopped"])
+        for wf in sorted(HISTORY.glob("week-*.json")):
+            snap = json.loads(wf.read_text())
+            for i, r in enumerate(snap["teams"], 1):
+                w.writerow([snap["week"], i, r["team"],
+                            f"{r['score']:.2f}", "yes" if r["chopped"] else "no"])
+    return path
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--league", type=int, default=LEAGUE_ID)
@@ -149,6 +171,7 @@ def main() -> int:
     payload = snapshot(week, pool)
     stem = write_week(payload)
     update_index(payload, stem)
+    write_season_csv()
 
     chopped = payload["chopped"]
     print(f"archived week {week}: chopped {chopped} at {payload['low_score']:.1f} "
