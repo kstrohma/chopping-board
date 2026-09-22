@@ -1,15 +1,21 @@
 {
   "week": 2,
   "final": true,
-  "archived_at": "2026-09-22T09:38:25+00:00",
-  "chopped": "Clesch's Team",
-  "low_score": 62.92,
+  "archived_at": "2026-09-22T14:58:02+00:00",
+  "chopped": "Commitment to Execution",
+  "low_score": 59.32,
   "teams": [
+    {
+      "team": "Commitment to Execution",
+      "team_id": 1806084,
+      "score": 59.32,
+      "chopped": true
+    },
     {
       "team": "Clesch's Team",
       "team_id": 1805653,
       "score": 62.92,
-      "chopped": true
+      "chopped": false
     },
     {
       "team": "the ones who remain!",
