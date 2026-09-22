@@ -85,6 +85,31 @@ def snapshot(week, pool):
     }
 
 
+def preserve_archived_at(payload):
+    """Keep the existing archived_at when re-archiving an unchanged week.
+
+    The freeze schedule fires a burst of triggers around Tuesday 05:00 UTC to beat
+    GitHub's flaky scheduler, so archive.py runs several times for the same week.
+    Without this, every run restamps archived_at and the files differ, producing a
+    fresh commit each time. If the just-computed snapshot matches what's already on
+    disk (same teams, chopped, low_score), reuse the stored timestamp so the output
+    is byte-identical and the burst's later runs commit nothing.
+    """
+    path = HISTORY / f"week-{payload['week']:02d}.json"
+    try:
+        prev = json.loads(path.read_text())
+    except (FileNotFoundError, json.JSONDecodeError):
+        return payload
+    unchanged = (
+        prev.get("teams") == payload["teams"]
+        and prev.get("chopped") == payload["chopped"]
+        and prev.get("low_score") == payload["low_score"]
+    )
+    if unchanged and prev.get("archived_at"):
+        payload["archived_at"] = prev["archived_at"]
+    return payload
+
+
 def write_week(payload):
     HISTORY.mkdir(parents=True, exist_ok=True)
     wk = payload["week"]
@@ -184,7 +209,7 @@ def main() -> int:
             print("no completed week to archive yet", file=sys.stderr)
             return 0
 
-    payload = snapshot(week, pool)
+    payload = preserve_archived_at(snapshot(week, pool))
     stem = write_week(payload)
     update_index(payload, stem)
     write_season_csv()

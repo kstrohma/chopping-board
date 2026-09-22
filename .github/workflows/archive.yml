@@ -1,21 +1,37 @@
 name: archive week
 
 # Snapshots the just-finished week's FINAL scores into docs/history/ for the
-# history dropdown. Runs Tuesday 05:00 UTC — 07:00 in Vienna during the CEST part
-# of the season (through late October), 06:00 after the switch to CET. That's
-# after Monday Night Football has gone final, so the week is settled and the
-# result is locked in before waivers run. (To keep it at exactly 07:00 Vienna
-# through the winter, bump this to '0 6 * * 2' after the DST change.)
+# history dropdown — this is the weekly "roster freeze". Targets Tuesday 05:00 UTC
+# (07:00 Vienna in CEST through late October, 06:00 after the switch to CET), i.e.
+# after Monday Night Football has gone final so the week is settled before waivers.
+#
+# GitHub's scheduler is best-effort and routinely drops or delays scheduled events
+# by 15-60 min, so a single 05:00 cron can land hours late (it did once: 09:38 UTC).
+# We therefore fire a *burst* every 10 min across the 05:00 UTC hour to maximise the
+# odds one lands promptly. archive.py is idempotent — preserve_archived_at() makes
+# every run after the first a no-op commit — so the burst re-running costs nothing.
+# For a hard guarantee, point an external scheduler (cron-job.org) at the
+# repository_dispatch hook below with a fine-grained PAT; dispatch triggers skip the
+# schedule queue and fire on time.
+#
+# The freeze is what the commish should confirm has committed (a "roster freeze"
+# commit landed) BEFORE cutting any teams — cutting first clears the roster and
+# drops the team from the archived board (see the Week 1 / Week 2 reconstructions).
+#
+# (To pin the burst to exactly 07:00 Vienna through the winter, shift the hour to 6
+# after the DST change.)
 
 on:
   schedule:
-    - cron: '0 5 * * 2'    # Tuesday 07:00 Vienna (CEST)
+    - cron: '1,11,21,31,41,51 5 * * 2'   # Tue 05:00-05:51 UTC burst (07:00 Vienna, CEST)
   workflow_dispatch:
     inputs:
       week:
         description: 'Week to archive (blank = auto-detect the finished week)'
         required: false
         default: ''
+  repository_dispatch:                   # optional external scheduler (cron-job.org)
+    types: [archive]
 
 concurrency:
   group: chop-archive

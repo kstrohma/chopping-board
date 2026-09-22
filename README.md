@@ -102,12 +102,24 @@ the current scoring period to the last week whose starters have all finished),
 so the scheduled job needs no week number. Archive one explicitly with
 `python archive.py --week 1`.
 
-The `archive week` workflow runs **Tuesday 05:00 UTC (07:00 Vienna, CEST)**, after
-Monday Night Football has gone final, so the result is locked in before waivers.
-Trigger it by hand from the Actions tab — with an optional week number — to
-backfill. (If a chopped team's roster is cleared before the archive runs, that
-team drops out of the live pool; reconstruct its row by injecting its final score
-— see the Week 1 reconstruction commit for the pattern.)
+The `archive week` workflow — the weekly **roster freeze** — targets **Tuesday
+05:00 UTC (07:00 Vienna, CEST)**, after Monday Night Football has gone final, so
+the result is locked in before waivers. Because GitHub's scheduler routinely
+delays scheduled events (a single 05:00 cron once landed at 09:38 UTC), it fires a
+**burst every 10 min across the 05:00 UTC hour**; `archive.py` is idempotent
+(`preserve_archived_at`), so the extra runs commit nothing. For an on-time hard
+guarantee, point an external scheduler (cron-job.org) at the workflow's
+`repository_dispatch` hook (`types: [archive]`) with a fine-grained PAT. Trigger it
+by hand from the Actions tab — with an optional week number — to backfill.
+
+**Freeze before you cut.** If a team's roster is cleared *before* the archive
+runs, that team drops out of the pool and the next-lowest survivor is chopped by
+mistake. So the commish should confirm the freeze has committed (a *roster freeze*
+commit has landed for the week) before cutting any team. If a cut slips in early,
+reconstruct the dropped team's row by injecting its final score — its `banked`
+value from the last live snapshot before the roster was cleared — below the lowest
+survivor if it was the true low. See the Week 1 and Week 2 reconstruction commits
+for the pattern.
 
 ## Weekly cadence (live → final → rollover)
 
