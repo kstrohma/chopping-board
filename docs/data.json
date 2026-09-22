@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-21T23:14:36+00:00",
+  "generated_at": "2026-09-22T01:50:11+00:00",
   "league_id": 350513,
   "season": 2026,
   "week": 2,
@@ -11,7 +11,7 @@
   "teams_live": 17,
   "players_yet_to_play": 8,
   "players_finished": 127,
-  "players_in_progress": 0,
+  "players_in_progress": 9,
   "teams": [
     {
       "team": "Commitment to Execution",
@@ -21,25 +21,11 @@
       "median": 59.32,
       "p10": 59.32,
       "p90": 59.32,
-      "chop_prob": 0.97918,
+      "chop_prob": 1.0,
       "bottom2_prob": 1.0,
-      "safety": 0.02081999999999995,
+      "safety": 0.0,
       "starters": 8,
       "to_play": 0
-    },
-    {
-      "team": "RollercoasterShow",
-      "team_id": 1806075,
-      "projection": 81.739997,
-      "banked": 49.7,
-      "median": 79.6536648853018,
-      "p10": 66.58942830193968,
-      "p90": 96.73811897912351,
-      "chop_prob": 0.02082,
-      "bottom2_prob": 0.04682,
-      "safety": 0.97918,
-      "starters": 8,
-      "to_play": 2
     },
     {
       "team": "Head Hunter",
@@ -86,16 +72,44 @@
     {
       "team": "The Chopfather",
       "team_id": 1805644,
-      "projection": 103.999997,
-      "banked": 72.799998,
-      "median": 101.78747439437902,
-      "p10": 89.53192043877597,
-      "p90": 118.56802911062157,
+      "projection": 94.43930744212759,
+      "banked": 78.4999976,
+      "median": 93.32610019554463,
+      "p10": 86.99484855938272,
+      "p90": 101.84985468254395,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
       "to_play": 2
+    },
+    {
+      "team": "Jouer Tellement Fort",
+      "team_id": 1805649,
+      "projection": 109.78470925153309,
+      "banked": 102.4000004,
+      "median": 108.802335424593,
+      "p10": 104.83364215441021,
+      "p90": 115.3957430067461,
+      "chop_prob": 0.0,
+      "bottom2_prob": 0.0,
+      "safety": 1.0,
+      "starters": 8,
+      "to_play": 1
+    },
+    {
+      "team": "Marie-Antoinette von \u00d6sterreich-Lothringen",
+      "team_id": 1805648,
+      "projection": 87.0040161388419,
+      "banked": 82.3,
+      "median": 86.10643673098144,
+      "p10": 83.3195440819147,
+      "p90": 91.46478374431794,
+      "chop_prob": 0.0,
+      "bottom2_prob": 0.0,
+      "safety": 1.0,
+      "starters": 8,
+      "to_play": 1
     },
     {
       "team": "Headless Packers",
@@ -110,34 +124,6 @@
       "safety": 1.0,
       "starters": 8,
       "to_play": 0
-    },
-    {
-      "team": "Marie-Antoinette von \u00d6sterreich-Lothringen",
-      "team_id": 1805648,
-      "projection": 88.9,
-      "banked": 80.4,
-      "median": 87.27162745349631,
-      "p10": 82.25845272571593,
-      "p90": 96.92338848542705,
-      "chop_prob": 0.0,
-      "bottom2_prob": 0.0,
-      "safety": 1.0,
-      "starters": 8,
-      "to_play": 1
-    },
-    {
-      "team": "Jouer Tellement Fort",
-      "team_id": 1805649,
-      "projection": 107.8100004,
-      "banked": 93.7000004,
-      "median": 105.97130323928093,
-      "p10": 98.37043089848015,
-      "p90": 118.42770122448725,
-      "chop_prob": 0.0,
-      "bottom2_prob": 0.0,
-      "safety": 1.0,
-      "starters": 8,
-      "to_play": 1
     },
     {
       "team": "Die Bienen",
@@ -196,6 +182,34 @@
       "to_play": 0
     },
     {
+      "team": "Heads Will Roll",
+      "team_id": 1805647,
+      "projection": 98.95286306024494,
+      "banked": 86.54,
+      "median": 97.56787368980932,
+      "p10": 91.89367976144206,
+      "p90": 106.63957808668313,
+      "chop_prob": 0.0,
+      "bottom2_prob": 0.0,
+      "safety": 1.0,
+      "starters": 8,
+      "to_play": 2
+    },
+    {
+      "team": "RollercoasterShow",
+      "team_id": 1806075,
+      "projection": 84.31128954967458,
+      "banked": 67.66,
+      "median": 83.1249354291504,
+      "p10": 76.41835322337228,
+      "p90": 92.13545732293021,
+      "chop_prob": 0.0,
+      "bottom2_prob": 0.0,
+      "safety": 1.0,
+      "starters": 8,
+      "to_play": 2
+    },
+    {
       "team": "pfue's Team",
       "team_id": 1807498,
       "projection": 82.6199995,
@@ -232,24 +246,10 @@
       "p10": 62.919999,
       "p90": 62.919999,
       "chop_prob": 0.0,
-      "bottom2_prob": 0.95138,
+      "bottom2_prob": 1.0,
       "safety": 1.0,
       "starters": 8,
       "to_play": 0
-    },
-    {
-      "team": "Heads Will Roll",
-      "team_id": 1805647,
-      "projection": 84.609999,
-      "banked": 61.14,
-      "median": 82.02681417611734,
-      "p10": 71.26326950121228,
-      "p90": 98.90419501031403,
-      "chop_prob": 0.0,
-      "bottom2_prob": 0.0018,
-      "safety": 1.0,
-      "starters": 8,
-      "to_play": 2
     }
   ]
 }
