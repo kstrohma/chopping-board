@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-22T02:58:18+00:00",
+  "generated_at": "2026-09-22T03:13:27+00:00",
   "league_id": 350513,
   "season": 2026,
   "week": 2,
@@ -9,9 +9,9 @@
   "rho": 0.15,
   "bust": 0.03,
   "teams_live": 17,
-  "players_yet_to_play": 8,
-  "players_finished": 127,
-  "players_in_progress": 9,
+  "players_yet_to_play": 0,
+  "players_finished": 136,
+  "players_in_progress": 0,
   "teams": [
     {
       "team": "Commitment to Execution",
@@ -72,44 +72,44 @@
     {
       "team": "Jouer Tellement Fort",
       "team_id": 1805649,
-      "projection": 110.0484468742321,
-      "banked": 107.7000004,
-      "median": 109.71940996917299,
-      "p10": 108.47092047579483,
-      "p90": 111.79751997671605,
+      "projection": 108.40000140000001,
+      "banked": 108.40000140000001,
+      "median": 108.40000140000001,
+      "p10": 108.40000140000001,
+      "p90": 108.40000140000001,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "The Chopfather",
       "team_id": 1805644,
-      "projection": 85.16744157667264,
+      "projection": 80.099998,
       "banked": 80.099998,
-      "median": 84.78999672270591,
-      "p10": 82.77044597516628,
-      "p90": 87.48980703917317,
+      "median": 80.099998,
+      "p10": 80.099998,
+      "p90": 80.099998,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 2
+      "to_play": 0
     },
     {
       "team": "Marie-Antoinette von \u00d6sterreich-Lothringen",
       "team_id": 1805648,
-      "projection": 87.69549108380595,
+      "projection": 86.2,
       "banked": 86.2,
-      "median": 87.40550750243474,
-      "p10": 86.52552488312696,
-      "p90": 89.09992967526642,
+      "median": 86.2,
+      "p10": 86.2,
+      "p90": 86.2,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "Headless Packers",
@@ -142,30 +142,30 @@
     {
       "team": "Heads Will Roll",
       "team_id": 1805647,
-      "projection": 106.18641967105415,
-      "banked": 102.2400004,
-      "median": 105.74391796229636,
-      "p10": 103.91578299053405,
-      "p90": 108.60334907177011,
+      "projection": 105.34,
+      "banked": 105.34,
+      "median": 105.34,
+      "p10": 105.34,
+      "p90": 105.34,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 2
+      "to_play": 0
     },
     {
       "team": "RollercoasterShow",
       "team_id": 1806075,
-      "projection": 90.5934434073737,
-      "banked": 85.3,
-      "median": 90.232111400789,
-      "p10": 88.10083648030005,
-      "p90": 93.13170342739046,
+      "projection": 85.28000300000001,
+      "banked": 85.28000300000001,
+      "median": 85.28000300000001,
+      "p10": 85.28000300000001,
+      "p90": 85.28000300000001,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 2
+      "to_play": 0
     },
     {
       "team": "Headless Vandemic",
