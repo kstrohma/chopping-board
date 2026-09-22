@@ -208,6 +208,14 @@ def main() -> int:
         if week is None:
             print("no completed week to archive yet", file=sys.stderr)
             return 0
+        # A frozen week stays frozen: never let an auto-run overwrite an existing
+        # snapshot. Otherwise a re-run after the commish clears a chopped roster
+        # would recompute the board without that team and chop the wrong one. Human
+        # backfills/corrections go through explicit --week, which still rebuilds.
+        if (HISTORY / f"week-{week:02d}.json").exists():
+            print(f"week {week} already frozen — leaving it (use --week {week} "
+                  f"to force a rebuild)", file=sys.stderr)
+            return 0
 
     payload = preserve_archived_at(snapshot(week, pool))
     stem = write_week(payload)

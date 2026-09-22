@@ -34,35 +34,35 @@ OUT = pathlib.Path(__file__).parent / "docs" / "data.json"
 # --- weekly cadence, in Vienna wall-clock time -----------------------------
 # The board follows the league's own rhythm rather than Fleaflicker's period:
 #   • each league week runs Wednesday 14:00 -> the next Wednesday 14:00;
-#   • from Tuesday 07:00 the week is shown as FINAL (games done, cut locked in);
+#   • the week flips to FINAL the moment its games are all done AND the freeze
+#     snapshot has been written (see main) — not on a fixed clock, so FINAL tracks
+#     the actual end of Monday Night Football rather than a wall-clock guess;
 #   • the ROLLOVER to the next week is Wednesday 14:00 — after waivers clear.
-# SEASON_ANCHOR is the Wednesday 14:00 that opens Week 1. Boundaries are compared
-# in naive Vienna wall time, so the CEST/CET switch needs no adjustment: "Tuesday
-# 07:00 Vienna" and "Wednesday 14:00 Vienna" hold year-round automatically.
+# SEASON_ANCHOR is the Wednesday 14:00 that opens Week 1. Only the rollover is
+# calendar-driven; it's compared in naive Vienna wall time, so the CEST/CET switch
+# needs no adjustment — "Wednesday 14:00 Vienna" holds year-round automatically.
 VIENNA = ZoneInfo("Europe/Vienna")
 SEASON_ANCHOR = dt.datetime(2026, 9, 9, 14, 0)  # Wed 14:00 Vienna, opens Week 1
-FINAL_HOUR = 7                                    # Tue 07:00 Vienna -> FINAL
 MAX_WEEK = 18
 
 
-def schedule_week(now: dt.datetime | None = None) -> tuple[int, bool]:
+def schedule_week(now: dt.datetime | None = None) -> int:
     """
-    (week, is_final) for this moment on the league's Vienna calendar.
+    The league-calendar week for this moment.
 
-    week steps up one at each Wednesday 14:00 Vienna (the waiver rollover);
-    is_final becomes True once Tuesday 07:00 Vienna of that week has passed.
+    Steps up by one at each Wednesday 14:00 Vienna (the waiver rollover). The
+    LIVE -> FINAL flip within a week is deliberately NOT calendar-driven — it keys
+    off the games actually finishing (see main) — so only the rollover lives here.
     """
     if now is None:
         now = dt.datetime.now(VIENNA)
     wall = now.astimezone(VIENNA).replace(tzinfo=None) if now.tzinfo else now
     if wall < SEASON_ANCHOR:
-        return 1, False
+        return 1
     week = 1
     while week < MAX_WEEK and wall >= SEASON_ANCHOR + dt.timedelta(weeks=week):
         week += 1
-    week_start = SEASON_ANCHOR + dt.timedelta(weeks=week - 1)
-    final_at = (week_start + dt.timedelta(days=6)).replace(hour=FINAL_HOUR, minute=0)
-    return week, wall >= final_at
+    return week
 
 
 def current_week(league_id: int, season: int) -> int:
@@ -114,10 +114,9 @@ def main() -> int:
     ap.add_argument("--out", type=pathlib.Path, default=OUT)
     args = ap.parse_args()
 
-    sched_week, cal_final = schedule_week()
+    sched_week = schedule_week()
     week = args.week if args.week is not None else sched_week
-    print(f"building week {week} (schedule says week {sched_week}, "
-          f"final={cal_final})", file=sys.stderr)
+    print(f"building week {week} (schedule says week {sched_week})", file=sys.stderr)
 
     pool = gc.build_pool(args.league, args.season, week, set(args.exclude))
     rows = gc.simulate(pool, n_sims=args.sims, rho=args.rho, bust=args.bust)
@@ -132,16 +131,18 @@ def main() -> int:
         1 for t in pool.values() for p in t["players"] if p["state"] == "IN_PROGRESS"
     )
 
-    # Show the week as FINAL only when the calendar says so (past Tue 07:00
-    # Vienna, on the auto-detected week), the games are actually settled, AND the
-    # archive snapshot exists — the page reads that archive for the final view, so
-    # gating on it avoids a window where "final" is claimed before the results are
-    # published (and keeps the just-chopped team, cleared from live rosters, in
-    # the picture).
+    # Flip to FINAL the moment the week's slate is over and the freeze snapshot
+    # exists — no wall-clock hour involved. live_players == 0 means every starter's
+    # game has gone final (a not-yet-kicked-off week still has remaining > 0, so it
+    # can't false-trigger), and banked_players > 0 guards against calling an
+    # unplayed week final. The page reads the archive for the final view, so we also
+    # require it to exist; the update loop writes that freeze as soon as the slate
+    # completes (see update.yml), so the two converge within one refresh of the last
+    # game going final — and the just-chopped team, once its roster is cleared, stays
+    # in the picture via the archive.
+    week_complete = live_players == 0 and banked_players > 0
     archive_ready = (args.out.parent / "history" / f"week-{week:02d}.json").exists()
-    final = (
-        args.week is None and cal_final and live_players == 0 and archive_ready
-    )
+    final = args.week is None and week_complete and archive_ready
 
     payload = {
         "generated_at": dt.datetime.now(dt.timezone.utc)

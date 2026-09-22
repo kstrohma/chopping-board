@@ -34,11 +34,12 @@ on:
     - cron: '*/5 17-23 * * 4'       # Thanksgiving / holiday afternoon games
     - cron: '*/5 17-23 * * 6'       # late-season Saturday slate
     - cron: '*/5 0-5 * * 0'         # spillover from Saturday night games
-    # transition bursts — the weekly flips (build_data's Vienna calendar) are the
-    # moments people check, but the 30-min baseline drops too many ticks to land
-    # near them promptly, so over-request across each. Hour windows cover both
+    # transition bursts — the moments people check. The dense */5 0-5 * * 2 window
+    # above already carries a live loop through Monday Night Football and into the
+    # freeze the moment the slate ends; these extra ticks just insure a loop is
+    # alive to catch the freeze / rollover if that one died. Hour windows cover both
     # CEST and CET so no DST edit is needed.
-    - cron: '*/10 5-6 * * 2'        # Tue 07:00 Vienna: week flips to FINAL
+    - cron: '*/10 5-6 * * 2'        # Tue early AM UTC: freeze/FINAL flip after MNF
     - cron: '*/10 12-13 * * 3'      # Wed 14:00 Vienna: rollover to the next week
     - cron: '7,37 * * * *'          # every-30-min baseline (off :00), every day
   workflow_dispatch:                # manual refresh from the Actions tab
@@ -92,12 +93,32 @@ jobs:
 
           while : ; do
             if python build_data.py; then
-              git add docs/data.json
+              # Freeze the week the instant its slate is complete, from inside this
+              # already-running job — the reliable heartbeat GitHub won't drop. When
+              # every starter's game is final (yet_to_play == 0, none in progress)
+              # but the week isn't FINAL yet (final == false ⇒ no freeze snapshot),
+              # archive it now, while rosters are still intact and before any manual
+              # cut lands, then rebuild so data.json flips to FINAL in the same push.
+              read yet inprog final week <<<"$(python -c "import json;d=json.load(open('docs/data.json'));print(d['players_yet_to_play'],d['players_in_progress'],str(d['final']).lower(),d['week'])")" || true
+              froze=""
+              if [ "${yet:-1}" -eq 0 ] && [ "${inprog:-1}" -eq 0 ] && [ "${final}" = "false" ]; then
+                echo "slate complete — freezing week ${week}"
+                if python archive.py && python build_data.py; then
+                  froze=1
+                else
+                  echo "freeze failed — will retry next loop"
+                fi
+              fi
+
+              git add docs/data.json docs/history
               if git diff --cached --quiet; then
                 echo "no change, nothing to commit"
               else
-                week=$(python -c "import json;print(json.load(open('docs/data.json'))['week'])")
-                git commit -m "chop data: week ${week} ($(date -u '+%Y-%m-%d %H:%M UTC'))"
+                if [ -n "${froze}" ]; then
+                  git commit -m "freeze week ${week}: roster locked ($(date -u '+%Y-%m-%d %H:%M UTC'))"
+                else
+                  git commit -m "chop data: week ${week} ($(date -u '+%Y-%m-%d %H:%M UTC'))"
+                fi
                 if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push; then
                   echo "pushed week ${week}"
                 else

@@ -1,25 +1,24 @@
 name: archive week
 
-# Snapshots the just-finished week's FINAL scores into docs/history/ for the
-# history dropdown — this is the weekly "roster freeze". Targets Tuesday 05:00 UTC
-# (07:00 Vienna in CEST through late October, 06:00 after the switch to CET), i.e.
-# after Monday Night Football has gone final so the week is settled before waivers.
+# BACKSTOP freeze. The primary "roster freeze" now happens inside the update-chop-data
+# job the instant the week's slate ends (see update.yml) — a running job is the one
+# thing GitHub's scheduler won't drop. This workflow is the safety net for the rare
+# case that job wasn't alive right after Monday Night Football: it snapshots the
+# just-finished week's FINAL scores into docs/history/ for the history dropdown.
 #
-# GitHub's scheduler is best-effort and routinely drops or delays scheduled events
-# by 15-60 min, so a single 05:00 cron can land hours late (it did once: 09:38 UTC).
-# We therefore fire a *burst* every 10 min across the 05:00 UTC hour to maximise the
-# odds one lands promptly. archive.py is idempotent — preserve_archived_at() makes
-# every run after the first a no-op commit — so the burst re-running costs nothing.
-# For a hard guarantee, point an external scheduler (cron-job.org) at the
-# repository_dispatch hook below with a fine-grained PAT; dispatch triggers skip the
-# schedule queue and fire on time.
+# It targets Tuesday 05:00 UTC (07:00 Vienna in CEST, 06:00 in CET), just after MNF.
+# GitHub delays scheduled events by 15-60 min, so rather than a single cron (which
+# once landed at 09:38 UTC) it fires a *burst* every 10 min across the 05:00 hour.
+# This never fights the primary freeze: archive.py in auto mode refuses to overwrite
+# an already-frozen week, so if the loop already froze it these runs are no-ops.
+# For an on-time hard guarantee, point an external scheduler (cron-job.org) at the
+# repository_dispatch hook below (event type `archive`) with a fine-grained PAT.
 #
-# The freeze is what the commish should confirm has committed (a "roster freeze"
-# commit landed) BEFORE cutting any teams — cutting first clears the roster and
-# drops the team from the archived board (see the Week 1 / Week 2 reconstructions).
+# Either way the commish should confirm the week's freeze commit has landed BEFORE
+# cutting any team — cutting first clears the roster and drops the team from the
+# board (see the Week 1 / Week 2 reconstructions).
 #
-# (To pin the burst to exactly 07:00 Vienna through the winter, shift the hour to 6
-# after the DST change.)
+# (To pin the burst to exactly 07:00 Vienna through winter, shift the hour to 6.)
 
 on:
   schedule:

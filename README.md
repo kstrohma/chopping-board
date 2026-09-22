@@ -100,17 +100,22 @@ who got chopped, with a per-week CSV download link.
 `archive.py` auto-detects the most recently completed week (it walks back from
 the current scoring period to the last week whose starters have all finished),
 so the scheduled job needs no week number. Archive one explicitly with
-`python archive.py --week 1`.
+`python archive.py --week 1`. In auto mode it **won't overwrite a week that's
+already frozen** — once locked, a week stays locked even if a roster is later
+cleared; only an explicit `--week` rebuilds it.
 
-The `archive week` workflow — the weekly **roster freeze** — targets **Tuesday
-05:00 UTC (07:00 Vienna, CEST)**, after Monday Night Football has gone final, so
-the result is locked in before waivers. Because GitHub's scheduler routinely
-delays scheduled events (a single 05:00 cron once landed at 09:38 UTC), it fires a
-**burst every 10 min across the 05:00 UTC hour**; `archive.py` is idempotent
-(`preserve_archived_at`), so the extra runs commit nothing. For an on-time hard
-guarantee, point an external scheduler (cron-job.org) at the workflow's
-`repository_dispatch` hook (`types: [archive]`) with a fine-grained PAT. Trigger it
-by hand from the Actions tab — with an optional week number — to backfill.
+The **roster freeze** happens primarily inside the `update chop data` job: the
+moment a week's slate is complete, that already-running job archives it and pushes
+a `freeze week N` commit (a running job is the one thing GitHub's scheduler won't
+drop). The separate **`archive week`** workflow is a **backstop** for the rare case
+that job wasn't alive right after Monday Night Football. It targets **Tuesday 05:00
+UTC (07:00 Vienna, CEST)** and, because GitHub delays scheduled events (a single
+05:00 cron once landed at 09:38 UTC), fires a **burst every 10 min across the 05:00
+hour**; since auto mode won't overwrite a frozen week, those runs are no-ops once
+the primary freeze has landed. For an on-time hard guarantee, point an external
+scheduler (cron-job.org) at the workflow's `repository_dispatch` hook (`types:
+[archive]`) with a fine-grained PAT. Trigger by hand from the Actions tab — with an
+optional week number — to backfill.
 
 **Freeze before you cut.** If a team's roster is cleared *before* the archive
 runs, that team drops out of the pool and the next-lowest survivor is chopped by
@@ -123,23 +128,28 @@ for the pattern.
 
 ## Weekly cadence (live → final → rollover)
 
-`build_data.py` drives the "current" view off the league's own Vienna calendar,
-not Fleaflicker's scoring period, so the transitions are predictable:
+`build_data.py` drives the "current" view off the league's own rhythm, not
+Fleaflicker's scoring period, so the transitions are predictable:
 
 ```
 Wed 14:00 Vienna   → week N opens, board goes LIVE (chop odds)
   … games Thu–Mon, scores firm up …
-Tue 07:00 Vienna   → week N shown as FINAL (results + who got chopped)
+last game final     → week N is FROZEN and shown as FINAL (results + who got chopped)
 Wed 14:00 Vienna   → ROLLOVER: week N+1 opens live (after waivers clear)
 ```
 
-Boundaries are compared in Vienna wall-clock time, so the CEST→CET switch needs
-no change — "Tuesday 07:00" and "Wednesday 14:00" hold year-round. The rollover
-is automatic; there's nothing to run by hand. The anchor for week 1 is
-`SEASON_ANCHOR` in `build_data.py` (Wed 2026-09-09 14:00); adjust it per season.
-The FINAL view is only shown once the week's `archive.py` snapshot exists, so the
-just-chopped team stays in the picture even after its roster is cleared. Force a
-specific week with `--week` / `FF_WEEK` if you ever need to override the calendar.
+The LIVE → FINAL flip is **game-driven**: the week flips the moment every
+starter's game is final (`live_players == 0`, i.e. just after Monday Night
+Football) *and* the freeze snapshot exists — no wall-clock hour, so the board is
+settled from Tuesday morning on without waiting for a fixed time. The freeze that
+enables it is written by the update job itself the instant the slate ends (see
+Scheduling), with the `archive week` workflow as a backstop. Only the **rollover**
+is calendar-based: week N+1 opens at Wednesday 14:00 Vienna (after waivers). That
+boundary is compared in Vienna wall time, so the CEST→CET switch needs no change —
+"Wednesday 14:00" holds year-round. The anchor for week 1 is `SEASON_ANCHOR` in
+`build_data.py` (Wed 2026-09-09 14:00); adjust it per season. The FINAL view reads
+the archive snapshot, so the just-chopped team stays in the picture even after its
+roster is cleared. Force a specific week with `--week` / `FF_WEEK` to override.
 
 ## Scheduling
 
