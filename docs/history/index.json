@@ -15,6 +15,14 @@
       "archived_at": "2026-09-22T14:58:02+00:00",
       "json": "history/week-02.json",
       "csv": "history/week-02.csv"
+    },
+    {
+      "week": 3,
+      "chopped": "Simonceo's Team",
+      "low_score": 61.26,
+      "archived_at": "2026-09-29T03:19:20+00:00",
+      "json": "history/week-03.json",
+      "csv": "history/week-03.csv"
     }
   ]
 }

@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-09-29T03:04:04+00:00",
+  "generated_at": "2026-09-29T03:19:27+00:00",
   "league_id": 350513,
   "season": 2026,
   "week": 3,
-  "final": false,
-  "phase": "live",
+  "final": true,
+  "phase": "final",
   "sims": 50000,
   "rho": 0.15,
   "bust": 0.03,
   "teams_live": 16,
-  "players_yet_to_play": 9,
-  "players_finished": 119,
-  "players_in_progress": 9,
+  "players_yet_to_play": 0,
+  "players_finished": 128,
+  "players_in_progress": 0,
   "teams": [
     {
       "team": "Simonceo's Team",
@@ -30,16 +30,16 @@
     {
       "team": "Head Hunter",
       "team_id": 1805715,
-      "projection": 87.66452614036459,
-      "banked": 86.099999,
-      "median": 87.45790583939468,
-      "p10": 86.61862806940705,
-      "p90": 88.82357937400253,
+      "projection": 90.299998,
+      "banked": 90.299998,
+      "median": 90.299998,
+      "p10": 90.299998,
+      "p90": 90.299998,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "The Chopfather",
@@ -58,30 +58,30 @@
     {
       "team": "Headless Packers",
       "team_id": 1805646,
-      "projection": 114.40189263785207,
+      "projection": 111.640003,
       "banked": 111.640003,
-      "median": 114.10660049496892,
-      "p10": 112.82568769235948,
-      "p90": 116.08471105845143,
+      "median": 111.640003,
+      "p10": 111.640003,
+      "p90": 111.640003,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 2
+      "to_play": 0
     },
     {
       "team": "Jouer Tellement Fort",
       "team_id": 1805649,
-      "projection": 93.84820627667507,
+      "projection": 92.78,
       "banked": 92.78,
-      "median": 93.66538934366159,
-      "p10": 93.04913150084542,
-      "p90": 94.7825328750916,
+      "median": 92.78,
+      "p10": 92.78,
+      "p90": 92.78,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "Marie-Antoinette von \u00d6sterreich-Lothringen",
@@ -100,16 +100,16 @@
     {
       "team": "Headless Vandemic",
       "team_id": 1805651,
-      "projection": 114.81961568468111,
+      "projection": 113.68000305,
       "banked": 113.68000305,
-      "median": 114.62772437643244,
-      "p10": 113.96342528079384,
-      "p90": 115.81948044167676,
+      "median": 113.68000305,
+      "p10": 113.68000305,
+      "p90": 113.68000305,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "Franchise Revolution",
@@ -156,16 +156,16 @@
     {
       "team": "Die Bienen",
       "team_id": 1806078,
-      "projection": 83.59583831409253,
+      "projection": 82.58,
       "banked": 82.58,
-      "median": 83.39856871846729,
-      "p10": 82.80366361179188,
-      "p90": 84.54969991117845,
+      "median": 82.58,
+      "p10": 82.58,
+      "p90": 82.58,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "RollercoasterShow",
@@ -184,16 +184,16 @@
     {
       "team": "the ones who remain!",
       "team_id": 1805785,
-      "projection": 105.75635139752896,
+      "projection": 103.22,
       "banked": 103.22,
-      "median": 105.54573315657922,
-      "p10": 104.39688599780294,
-      "p90": 107.18182834979952,
+      "median": 103.22,
+      "p10": 103.22,
+      "p90": 103.22,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "Lutte Titanesque",
@@ -226,16 +226,16 @@
     {
       "team": "Clesch's Team",
       "team_id": 1805653,
-      "projection": 78.0494432540665,
+      "projection": 75.14,
       "banked": 75.14,
-      "median": 77.77830287384788,
-      "p10": 76.45677409640649,
-      "p90": 79.71681102220357,
+      "median": 75.14,
+      "p10": 75.14,
+      "p90": 75.14,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 2
+      "to_play": 0
     }
   ]
 }

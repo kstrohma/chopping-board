@@ -1,0 +1,105 @@
+{
+  "week": 3,
+  "final": true,
+  "archived_at": "2026-09-29T03:19:20+00:00",
+  "chopped": "Simonceo's Team",
+  "low_score": 61.26,
+  "teams": [
+    {
+      "team": "Simonceo's Team",
+      "team_id": 1806254,
+      "score": 61.26,
+      "chopped": true
+    },
+    {
+      "team": "pfue's Team",
+      "team_id": 1807498,
+      "score": 71.66,
+      "chopped": false
+    },
+    {
+      "team": "Always open",
+      "team_id": 1805645,
+      "score": 72.54,
+      "chopped": false
+    },
+    {
+      "team": "Clesch's Team",
+      "team_id": 1805653,
+      "score": 75.14,
+      "chopped": false
+    },
+    {
+      "team": "Lutte Titanesque",
+      "team_id": 1805535,
+      "score": 81.46,
+      "chopped": false
+    },
+    {
+      "team": "RollercoasterShow",
+      "team_id": 1806075,
+      "score": 82.5,
+      "chopped": false
+    },
+    {
+      "team": "Die Bienen",
+      "team_id": 1806078,
+      "score": 82.58,
+      "chopped": false
+    },
+    {
+      "team": "Heads Will Roll",
+      "team_id": 1805647,
+      "score": 84.94,
+      "chopped": false
+    },
+    {
+      "team": "Head Hunter",
+      "team_id": 1805715,
+      "score": 90.3,
+      "chopped": false
+    },
+    {
+      "team": "Jouer Tellement Fort",
+      "team_id": 1805649,
+      "score": 92.78,
+      "chopped": false
+    },
+    {
+      "team": "Marie-Antoinette von \u00d6sterreich-Lothringen",
+      "team_id": 1805648,
+      "score": 99.54,
+      "chopped": false
+    },
+    {
+      "team": "the ones who remain!",
+      "team_id": 1805785,
+      "score": 103.22,
+      "chopped": false
+    },
+    {
+      "team": "Headless Packers",
+      "team_id": 1805646,
+      "score": 111.64,
+      "chopped": false
+    },
+    {
+      "team": "The Chopfather",
+      "team_id": 1805644,
+      "score": 113.32,
+      "chopped": false
+    },
+    {
+      "team": "Headless Vandemic",
+      "team_id": 1805651,
+      "score": 113.68,
+      "chopped": false
+    },
+    {
+      "team": "Franchise Revolution",
+      "team_id": 1805654,
+      "score": 115.9,
+      "chopped": false
+    }
+  ]
+}
