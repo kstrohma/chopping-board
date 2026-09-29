@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-28T22:38:40+00:00",
+  "generated_at": "2026-09-29T02:33:47+00:00",
   "league_id": 350513,
   "season": 2026,
   "week": 3,
@@ -11,7 +11,7 @@
   "teams_live": 16,
   "players_yet_to_play": 9,
   "players_finished": 119,
-  "players_in_progress": 0,
+  "players_in_progress": 9,
   "teams": [
     {
       "team": "Simonceo's Team",
@@ -21,34 +21,20 @@
       "median": 61.260001,
       "p10": 61.260001,
       "p90": 61.260001,
-      "chop_prob": 0.99906,
+      "chop_prob": 1.0,
       "bottom2_prob": 1.0,
-      "safety": 0.0009400000000000519,
+      "safety": 0.0,
       "starters": 8,
       "to_play": 0
     },
     {
-      "team": "Clesch's Team",
-      "team_id": 1805653,
-      "projection": 82.4800004,
-      "banked": 60.74,
-      "median": 80.45678814282212,
-      "p10": 70.56223257334439,
-      "p90": 94.99032750532852,
-      "chop_prob": 0.00094,
-      "bottom2_prob": 0.133,
-      "safety": 0.99906,
-      "starters": 8,
-      "to_play": 2
-    },
-    {
       "team": "Head Hunter",
       "team_id": 1805715,
-      "projection": 92.239999,
-      "banked": 80.499999,
-      "median": 90.70267577904599,
-      "p10": 84.35028938073368,
-      "p90": 100.91248210635972,
+      "projection": 88.38534654432341,
+      "banked": 84.999999,
+      "median": 87.92788641205671,
+      "p10": 86.10815462456378,
+      "p90": 90.9319400661641,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
@@ -70,6 +56,34 @@
       "to_play": 0
     },
     {
+      "team": "Headless Packers",
+      "team_id": 1805646,
+      "projection": 114.11779809707687,
+      "banked": 108.140003,
+      "median": 113.49003182300254,
+      "p10": 110.70987337096442,
+      "p90": 117.78608651242108,
+      "chop_prob": 0.0,
+      "bottom2_prob": 0.0,
+      "safety": 1.0,
+      "starters": 8,
+      "to_play": 2
+    },
+    {
+      "team": "Jouer Tellement Fort",
+      "team_id": 1805649,
+      "projection": 95.09254432712626,
+      "banked": 92.78,
+      "median": 94.69107245192757,
+      "p10": 93.35997611518557,
+      "p90": 97.13797921715494,
+      "chop_prob": 0.0,
+      "bottom2_prob": 0.0,
+      "safety": 1.0,
+      "starters": 8,
+      "to_play": 1
+    },
+    {
       "team": "Marie-Antoinette von \u00d6sterreich-Lothringen",
       "team_id": 1805648,
       "projection": 99.53999999999999,
@@ -84,32 +98,18 @@
       "to_play": 0
     },
     {
-      "team": "Jouer Tellement Fort",
-      "team_id": 1805649,
-      "projection": 96.5499993,
-      "banked": 88.58,
-      "median": 95.16851915952411,
-      "p10": 90.57772716033692,
-      "p90": 103.43791636966948,
+      "team": "Headless Vandemic",
+      "team_id": 1805651,
+      "projection": 116.1478524295166,
+      "banked": 113.68000305,
+      "median": 115.71013563246747,
+      "p10": 114.30204626786616,
+      "p90": 118.30982351511634,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
       "to_play": 1
-    },
-    {
-      "team": "Headless Packers",
-      "team_id": 1805646,
-      "projection": 119.7100016,
-      "banked": 99.040003,
-      "median": 117.38449291201289,
-      "p10": 107.89555421104629,
-      "p90": 132.34678189712295,
-      "chop_prob": 0.0,
-      "bottom2_prob": 0.0,
-      "safety": 1.0,
-      "starters": 8,
-      "to_play": 2
     },
     {
       "team": "Franchise Revolution",
@@ -140,20 +140,6 @@
       "to_play": 0
     },
     {
-      "team": "Headless Vandemic",
-      "team_id": 1805651,
-      "projection": 105.66000305,
-      "banked": 97.38000305,
-      "median": 104.2467267322991,
-      "p10": 99.48081649265121,
-      "p90": 112.86167996456007,
-      "chop_prob": 0.0,
-      "bottom2_prob": 0.0,
-      "safety": 1.0,
-      "starters": 8,
-      "to_play": 1
-    },
-    {
       "team": "Heads Will Roll",
       "team_id": 1805647,
       "projection": 84.939999,
@@ -166,6 +152,20 @@
       "safety": 1.0,
       "starters": 8,
       "to_play": 0
+    },
+    {
+      "team": "Die Bienen",
+      "team_id": 1806078,
+      "projection": 84.78125822772029,
+      "banked": 82.58,
+      "median": 84.36049476725458,
+      "p10": 83.06022261714918,
+      "p90": 86.86388962674678,
+      "chop_prob": 0.0,
+      "bottom2_prob": 0.0,
+      "safety": 1.0,
+      "starters": 8,
+      "to_play": 1
     },
     {
       "team": "RollercoasterShow",
@@ -182,13 +182,13 @@
       "to_play": 0
     },
     {
-      "team": "Die Bienen",
-      "team_id": 1806078,
-      "projection": 84.9699993,
-      "banked": 77.48,
-      "median": 83.4672296911008,
-      "p10": 79.07680453064576,
-      "p90": 91.98445731364438,
+      "team": "the ones who remain!",
+      "team_id": 1805785,
+      "projection": 107.73752765098031,
+      "banked": 102.239999,
+      "median": 107.25952333992194,
+      "p10": 104.7902056278429,
+      "p90": 110.82141559943598,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
@@ -210,20 +210,6 @@
       "to_play": 0
     },
     {
-      "team": "the ones who remain!",
-      "team_id": 1805785,
-      "projection": 109.65,
-      "banked": 90.6,
-      "median": 108.09398740759471,
-      "p10": 99.46955551929759,
-      "p90": 120.3496116438564,
-      "chop_prob": 0.0,
-      "bottom2_prob": 0.0,
-      "safety": 1.0,
-      "starters": 8,
-      "to_play": 1
-    },
-    {
       "team": "pfue's Team",
       "team_id": 1807498,
       "projection": 71.6600002,
@@ -232,10 +218,24 @@
       "p10": 71.6600002,
       "p90": 71.6600002,
       "chop_prob": 0.0,
-      "bottom2_prob": 0.867,
+      "bottom2_prob": 1.0,
       "safety": 1.0,
       "starters": 8,
       "to_play": 0
+    },
+    {
+      "team": "Clesch's Team",
+      "team_id": 1805653,
+      "projection": 80.24850977346262,
+      "banked": 73.94,
+      "median": 79.64225290214705,
+      "p10": 76.78260672958292,
+      "p90": 83.85998205546535,
+      "chop_prob": 0.0,
+      "bottom2_prob": 0.0,
+      "safety": 1.0,
+      "starters": 8,
+      "to_play": 2
     }
   ]
 }
