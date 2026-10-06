@@ -23,6 +23,14 @@
       "archived_at": "2026-09-29T03:19:20+00:00",
       "json": "history/week-03.json",
       "csv": "history/week-03.csv"
+    },
+    {
+      "week": 4,
+      "chopped": "pfue's Team",
+      "low_score": 65.54,
+      "archived_at": "2026-10-06T03:34:37+00:00",
+      "json": "history/week-04.json",
+      "csv": "history/week-04.csv"
     }
   ]
 }

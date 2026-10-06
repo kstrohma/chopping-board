@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-10-06T03:19:12+00:00",
+  "generated_at": "2026-10-06T03:34:48+00:00",
   "league_id": 350513,
   "season": 2026,
   "week": 4,
-  "final": false,
-  "phase": "live",
+  "final": true,
+  "phase": "final",
   "sims": 50000,
   "rho": 0.15,
   "bust": 0.03,
   "teams_live": 15,
-  "players_yet_to_play": 8,
-  "players_finished": 112,
-  "players_in_progress": 8,
+  "players_yet_to_play": 0,
+  "players_finished": 120,
+  "players_in_progress": 0,
   "teams": [
     {
       "team": "pfue's Team",
@@ -30,30 +30,30 @@
     {
       "team": "Headless Packers",
       "team_id": 1805646,
-      "projection": 127.49115817820179,
+      "projection": 126.359999,
       "banked": 126.359999,
-      "median": 127.34231386469787,
-      "p10": 126.72960965123796,
-      "p90": 128.33015816606542,
+      "median": 126.359999,
+      "p10": 126.359999,
+      "p90": 126.359999,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "Franchise Revolution",
       "team_id": 1805654,
-      "projection": 138.6517433273185,
-      "banked": 136.96,
-      "median": 138.53516782261266,
-      "p10": 137.83823069871752,
-      "p90": 139.46912203291964,
+      "projection": 144.63999900000002,
+      "banked": 144.63999900000002,
+      "median": 144.63999900000002,
+      "p10": 144.63999900000002,
+      "p90": 144.63999900000002,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 2
+      "to_play": 0
     },
     {
       "team": "Marie-Antoinette von \u00d6sterreich-Lothringen",
@@ -168,32 +168,32 @@
       "to_play": 0
     },
     {
-      "team": "the ones who remain!",
-      "team_id": 1805785,
-      "projection": 93.79458083758253,
-      "banked": 93.02,
-      "median": 93.66351606516153,
-      "p10": 93.21689123745969,
-      "p90": 94.47364836987245,
+      "team": "Heads Will Roll",
+      "team_id": 1805647,
+      "projection": 77.62,
+      "banked": 77.62,
+      "median": 77.62,
+      "p10": 77.62,
+      "p90": 77.62,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
-      "team": "Heads Will Roll",
-      "team_id": 1805647,
-      "projection": 68.54377196424967,
-      "banked": 66.22,
-      "median": 68.35663125309577,
-      "p10": 67.48627401376721,
-      "p90": 69.6158849992019,
+      "team": "the ones who remain!",
+      "team_id": 1805785,
+      "projection": 93.02,
+      "banked": 93.02,
+      "median": 93.02,
+      "p10": 93.02,
+      "p90": 93.02,
       "chop_prob": 0.0,
-      "bottom2_prob": 0.04962,
+      "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 3
+      "to_play": 0
     },
     {
       "team": "Lutte Titanesque",
@@ -204,7 +204,7 @@
       "p10": 67.28,
       "p90": 67.28,
       "chop_prob": 0.0,
-      "bottom2_prob": 0.95038,
+      "bottom2_prob": 1.0,
       "safety": 1.0,
       "starters": 8,
       "to_play": 0
@@ -212,16 +212,16 @@
     {
       "team": "Clesch's Team",
       "team_id": 1805653,
-      "projection": 77.88801064954032,
+      "projection": 77.36,
       "banked": 77.36,
-      "median": 77.78471334097745,
-      "p10": 77.47446041838894,
-      "p90": 78.38429831824735,
+      "median": 77.36,
+      "p10": 77.36,
+      "p90": 77.36,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     }
   ]
 }
