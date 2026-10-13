@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-13T03:19:25+00:00",
+  "generated_at": "2026-10-13T03:34:34+00:00",
   "league_id": 350513,
   "season": 2026,
   "week": 5,
@@ -9,7 +9,7 @@
   "rho": 0.15,
   "bust": 0.03,
   "teams_live": 14,
-  "players_yet_to_play": 6,
+  "players_yet_to_play": 0,
   "players_finished": 106,
   "players_in_progress": 6,
   "teams": [
@@ -30,16 +30,16 @@
     {
       "team": "Franchise Revolution",
       "team_id": 1805654,
-      "projection": 146.4277092010058,
+      "projection": 145.29999660000001,
       "banked": 145.29999660000001,
-      "median": 146.23559576821037,
-      "p10": 145.58619763801312,
-      "p90": 147.41955606034384,
+      "median": 145.29999660000001,
+      "p10": 145.29999660000001,
+      "p90": 145.29999660000001,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "The Chopfather",
@@ -49,6 +49,20 @@
       "median": 121.4600004,
       "p10": 121.4600004,
       "p90": 121.4600004,
+      "chop_prob": 0.0,
+      "bottom2_prob": 0.0,
+      "safety": 1.0,
+      "starters": 8,
+      "to_play": 0
+    },
+    {
+      "team": "Jouer Tellement Fort",
+      "team_id": 1805649,
+      "projection": 96.68,
+      "banked": 96.68,
+      "median": 96.68,
+      "p10": 96.68,
+      "p90": 96.68,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
@@ -68,20 +82,6 @@
       "safety": 1.0,
       "starters": 8,
       "to_play": 0
-    },
-    {
-      "team": "Jouer Tellement Fort",
-      "team_id": 1805649,
-      "projection": 89.8053174942164,
-      "banked": 88.88,
-      "median": 89.68115739182255,
-      "p10": 89.18557601253772,
-      "p90": 90.49608681808205,
-      "chop_prob": 0.0,
-      "bottom2_prob": 0.0,
-      "safety": 1.0,
-      "starters": 8,
-      "to_play": 1
     },
     {
       "team": "Head Hunter",
@@ -114,30 +114,30 @@
     {
       "team": "RollercoasterShow",
       "team_id": 1806075,
-      "projection": 116.18317806826548,
-      "banked": 114.980002,
-      "median": 116.08625138268951,
-      "p10": 115.53726008506908,
-      "p90": 116.86385134403962,
+      "projection": 116.180002,
+      "banked": 116.180002,
+      "median": 116.180002,
+      "p10": 116.180002,
+      "p90": 116.180002,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "Always open",
       "team_id": 1805645,
-      "projection": 105.97003133866728,
+      "projection": 105.5,
       "banked": 105.5,
-      "median": 105.88025776730635,
-      "p10": 105.60302988961477,
-      "p90": 106.40839811321095,
+      "median": 105.5,
+      "p10": 105.5,
+      "p90": 105.5,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "Die Bienen",
@@ -156,30 +156,30 @@
     {
       "team": "Heads Will Roll",
       "team_id": 1805647,
-      "projection": 84.41332705871363,
+      "projection": 83.560002,
       "banked": 83.560002,
-      "median": 84.26432808409149,
-      "p10": 83.77441727463506,
-      "p90": 85.14745478088032,
+      "median": 83.560002,
+      "p10": 83.560002,
+      "p90": 83.560002,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "Lutte Titanesque",
       "team_id": 1805535,
-      "projection": 105.62833945644131,
-      "banked": 104.840003,
-      "median": 105.52486260404652,
-      "p10": 105.09642710591095,
-      "p90": 106.2181351626083,
+      "projection": 103.240003,
+      "banked": 103.240003,
+      "median": 103.240003,
+      "p10": 103.240003,
+      "p90": 103.240003,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "the ones who remain!",
