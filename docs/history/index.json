@@ -31,6 +31,14 @@
       "archived_at": "2026-10-06T03:34:37+00:00",
       "json": "history/week-04.json",
       "csv": "history/week-04.csv"
+    },
+    {
+      "week": 5,
+      "chopped": "Headless Packers",
+      "low_score": 62.44,
+      "archived_at": "2026-10-13T03:49:50+00:00",
+      "json": "history/week-05.json",
+      "csv": "history/week-05.csv"
     }
   ]
 }
