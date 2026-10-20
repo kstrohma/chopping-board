@@ -39,6 +39,14 @@
       "archived_at": "2026-10-13T03:49:50+00:00",
       "json": "history/week-05.json",
       "csv": "history/week-05.csv"
+    },
+    {
+      "week": 6,
+      "chopped": "Clesch's Team",
+      "low_score": 20.98,
+      "archived_at": "2026-10-20T03:24:50+00:00",
+      "json": "history/week-06.json",
+      "csv": "history/week-06.csv"
     }
   ]
 }
