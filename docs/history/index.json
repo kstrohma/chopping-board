@@ -47,6 +47,14 @@
       "archived_at": "2026-10-20T03:24:50+00:00",
       "json": "history/week-06.json",
       "csv": "history/week-06.csv"
+    },
+    {
+      "week": 7,
+      "chopped": "Always open",
+      "low_score": 52.52,
+      "archived_at": "2026-10-27T03:26:22+00:00",
+      "json": "history/week-07.json",
+      "csv": "history/week-07.csv"
     }
   ]
 }

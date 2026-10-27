@@ -1,0 +1,81 @@
+{
+  "week": 7,
+  "final": true,
+  "archived_at": "2026-10-27T03:26:22+00:00",
+  "chopped": "Always open",
+  "low_score": 52.52,
+  "teams": [
+    {
+      "team": "Always open",
+      "team_id": 1805645,
+      "score": 52.52,
+      "chopped": true
+    },
+    {
+      "team": "RollercoasterShow",
+      "team_id": 1806075,
+      "score": 71.92,
+      "chopped": false
+    },
+    {
+      "team": "the ones who remain!",
+      "team_id": 1805785,
+      "score": 77.2,
+      "chopped": false
+    },
+    {
+      "team": "Marie-Antoinette von \u00d6sterreich-Lothringen",
+      "team_id": 1805648,
+      "score": 80.9,
+      "chopped": false
+    },
+    {
+      "team": "The Chopfather",
+      "team_id": 1805644,
+      "score": 91.3,
+      "chopped": false
+    },
+    {
+      "team": "Heads Will Roll",
+      "team_id": 1805647,
+      "score": 96.88,
+      "chopped": false
+    },
+    {
+      "team": "Die Bienen",
+      "team_id": 1806078,
+      "score": 105.08,
+      "chopped": false
+    },
+    {
+      "team": "Headless Vandemic",
+      "team_id": 1805651,
+      "score": 107.02,
+      "chopped": false
+    },
+    {
+      "team": "Jouer Tellement Fort",
+      "team_id": 1805649,
+      "score": 109.56,
+      "chopped": false
+    },
+    {
+      "team": "Franchise Revolution",
+      "team_id": 1805654,
+      "score": 116.58,
+      "chopped": false
+    },
+    {
+      "team": "Lutte Titanesque",
+      "team_id": 1805535,
+      "score": 117.84,
+      "chopped": false
+    },
+    {
+      "team": "Head Hunter",
+      "team_id": 1805715,
+      "score": 154.48,
+      "chopped": false
+    }
+  ]
+}
