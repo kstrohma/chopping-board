@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-02T19:45:17+00:00",
+  "generated_at": "2026-11-03T02:14:04+00:00",
   "league_id": 350513,
   "season": 2026,
   "week": 8,
@@ -11,7 +11,7 @@
   "teams_live": 11,
   "players_yet_to_play": 5,
   "players_finished": 83,
-  "players_in_progress": 0,
+  "players_in_progress": 5,
   "teams": [
     {
       "team": "Marie-Antoinette von \u00d6sterreich-Lothringen",
@@ -21,25 +21,11 @@
       "median": 74.2,
       "p10": 74.2,
       "p90": 74.2,
-      "chop_prob": 0.98958,
+      "chop_prob": 1.0,
       "bottom2_prob": 1.0,
-      "safety": 0.010419999999999985,
+      "safety": 0.0,
       "starters": 8,
       "to_play": 0
-    },
-    {
-      "team": "Headless Vandemic",
-      "team_id": 1805651,
-      "projection": 99.63999700000001,
-      "banked": 68.3,
-      "median": 97.43515178567725,
-      "p10": 84.68764801909096,
-      "p90": 114.32417669624883,
-      "chop_prob": 0.01042,
-      "bottom2_prob": 0.03672,
-      "safety": 0.98958,
-      "starters": 8,
-      "to_play": 2
     },
     {
       "team": "Franchise Revolution",
@@ -58,11 +44,11 @@
     {
       "team": "Head Hunter",
       "team_id": 1805715,
-      "projection": 139.610001,
-      "banked": 105.360001,
-      "median": 136.06082797634434,
-      "p10": 120.36150717514491,
-      "p90": 160.20284056037093,
+      "projection": 136.73820579646997,
+      "banked": 112.860001,
+      "median": 134.24561810989945,
+      "p10": 123.20408483966615,
+      "p90": 151.0634490415561,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
@@ -96,6 +82,20 @@
       "safety": 1.0,
       "starters": 8,
       "to_play": 0
+    },
+    {
+      "team": "Headless Vandemic",
+      "team_id": 1805651,
+      "projection": 106.53101046293682,
+      "banked": 84.68,
+      "median": 105.04692273701029,
+      "p10": 96.1578355881367,
+      "p90": 116.82229704996381,
+      "chop_prob": 0.0,
+      "bottom2_prob": 0.0,
+      "safety": 1.0,
+      "starters": 8,
+      "to_play": 2
     },
     {
       "team": "Lutte Titanesque",
@@ -142,11 +142,11 @@
     {
       "team": "Die Bienen",
       "team_id": 1806078,
-      "projection": 96.8,
-      "banked": 88.39999999999999,
-      "median": 95.19970167904087,
-      "p10": 90.21959406911508,
-      "p90": 104.68162998989264,
+      "projection": 99.3565451811899,
+      "banked": 93.5,
+      "median": 98.21314727870346,
+      "p10": 94.75410178579011,
+      "p90": 104.8928357429496,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
@@ -162,7 +162,7 @@
       "p10": 79.9600003,
       "p90": 79.9600003,
       "chop_prob": 0.0,
-      "bottom2_prob": 0.96328,
+      "bottom2_prob": 1.0,
       "safety": 1.0,
       "starters": 8,
       "to_play": 0
