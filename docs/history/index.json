@@ -63,6 +63,14 @@
       "archived_at": "2026-11-03T04:37:03+00:00",
       "json": "history/week-08.json",
       "csv": "history/week-08.csv"
+    },
+    {
+      "week": 9,
+      "chopped": "Head Hunter",
+      "low_score": 61.1,
+      "archived_at": "2026-11-10T04:30:24+00:00",
+      "json": "history/week-09.json",
+      "csv": "history/week-09.csv"
     }
   ]
 }
