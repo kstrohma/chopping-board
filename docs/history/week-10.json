@@ -1,0 +1,63 @@
+{
+  "week": 10,
+  "final": true,
+  "archived_at": "2026-11-17T04:35:04+00:00",
+  "chopped": "Lutte Titanesque",
+  "low_score": 68.52,
+  "teams": [
+    {
+      "team": "Lutte Titanesque",
+      "team_id": 1805535,
+      "score": 68.52,
+      "chopped": true
+    },
+    {
+      "team": "Die Bienen",
+      "team_id": 1806078,
+      "score": 82.48,
+      "chopped": false
+    },
+    {
+      "team": "RollercoasterShow",
+      "team_id": 1806075,
+      "score": 92.94,
+      "chopped": false
+    },
+    {
+      "team": "the ones who remain!",
+      "team_id": 1805785,
+      "score": 109.14,
+      "chopped": false
+    },
+    {
+      "team": "Jouer Tellement Fort",
+      "team_id": 1805649,
+      "score": 112.4,
+      "chopped": false
+    },
+    {
+      "team": "Heads Will Roll",
+      "team_id": 1805647,
+      "score": 133.66,
+      "chopped": false
+    },
+    {
+      "team": "Franchise Revolution",
+      "team_id": 1805654,
+      "score": 154.56,
+      "chopped": false
+    },
+    {
+      "team": "Headless Vandemic",
+      "team_id": 1805651,
+      "score": 157.16,
+      "chopped": false
+    },
+    {
+      "team": "The Chopfather",
+      "team_id": 1805644,
+      "score": 162.22,
+      "chopped": false
+    }
+  ]
+}

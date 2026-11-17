@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-11-17T04:19:51+00:00",
+  "generated_at": "2026-11-17T04:35:09+00:00",
   "league_id": 350513,
   "season": 2026,
   "week": 10,
-  "final": false,
-  "phase": "live",
+  "final": true,
+  "phase": "final",
   "sims": 50000,
   "rho": 0.15,
   "bust": 0.03,
   "teams_live": 9,
-  "players_yet_to_play": 2,
-  "players_finished": 69,
-  "players_in_progress": 3,
+  "players_yet_to_play": 0,
+  "players_finished": 72,
+  "players_in_progress": 0,
   "teams": [
     {
       "team": "Lutte Titanesque",
@@ -30,16 +30,16 @@
     {
       "team": "Franchise Revolution",
       "team_id": 1805654,
-      "projection": 155.2136536923935,
+      "projection": 154.559996,
       "banked": 154.559996,
-      "median": 155.09769586668267,
-      "p10": 154.72353464232913,
-      "p90": 155.77866896044233,
+      "median": 154.559996,
+      "p10": 154.559996,
+      "p90": 154.559996,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "Headless Vandemic",
@@ -72,16 +72,16 @@
     {
       "team": "Jouer Tellement Fort",
       "team_id": 1805649,
-      "projection": 113.21548160408001,
+      "projection": 112.399998,
       "banked": 112.399998,
-      "median": 113.11020090290091,
-      "p10": 112.66550820517689,
-      "p90": 113.83789209458095,
+      "median": 112.399998,
+      "p10": 112.399998,
+      "p90": 112.399998,
       "chop_prob": 0.0,
       "bottom2_prob": 0.0,
       "safety": 1.0,
       "starters": 8,
-      "to_play": 1
+      "to_play": 0
     },
     {
       "team": "Heads Will Roll",
