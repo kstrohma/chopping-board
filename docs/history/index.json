@@ -79,6 +79,14 @@
       "archived_at": "2026-11-17T04:35:04+00:00",
       "json": "history/week-10.json",
       "csv": "history/week-10.csv"
+    },
+    {
+      "week": 11,
+      "chopped": "the ones who remain!",
+      "low_score": 63.96,
+      "archived_at": "2026-11-24T07:37:56+00:00",
+      "json": "history/week-11.json",
+      "csv": "history/week-11.csv"
     }
   ]
 }
